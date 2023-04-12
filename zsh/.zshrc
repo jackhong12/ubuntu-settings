@@ -28,6 +28,23 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # bind autocompelet
-bindkey '^O' autosuggest-accept	
+bindkey '^O' autosuggest-accept
+
 # update option
 DISABLE_AUTO_UPDATE="true"
+
+# key mapping {{{
+
+# - show all bind keys
+#     bindkey
+
+bindkey '^H' backward-delete-char
+bindkey '^W' kill-word
+
+bindkey '^B' beginning-of-line
+bindkey '^E' end-of-line
+
+bindkey '^J' backward-word
+bindkey '^K' forward-word
+
+#}}}
