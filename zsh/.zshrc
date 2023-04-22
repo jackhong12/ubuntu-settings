@@ -1,17 +1,18 @@
-# basic settings
+# Basic Alias {{{
 export TZ='Asia/Taipei'
 export TERM="xterm-256color"
+export CC="clang"
+export CXX="clang++"
+export LD="LLD"
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-
-# oh-my-zsh settins
+# }}}
+# OMZ {{{
 ZSH_THEME="powerlevel10k/powerlevel10k"
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 export ZSH="$HOME/.oh-my-zsh"
 plugins=(
-    git
     vi-mode
     history
     colored-man-pages
@@ -27,24 +28,13 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-# bind autocompelet
-bindkey '^O' autosuggest-accept
+bindkey '^O' autosuggest-accept	# bind autocompelet
 
 # update option
 DISABLE_AUTO_UPDATE="true"
 
-# include other files in ~/.zsh {{{
-if [ -d ~/.zsh ]; then
-    c=$(ls ~/.zsh | wc -c)
-    if [ $c -gt 0 ]; then
-        for f in ~/.zsh/*.zsh; do
-            source $f
-        done
-    fi
-fi
 # }}}
-
-# key mapping {{{
+# Key Mapping {{{
 
 # - show all bind keys
 #     bindkey
@@ -59,3 +49,19 @@ bindkey '^J' backward-word
 bindkey '^K' forward-word
 
 #}}}
+# P10k Settings {{{
+typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_from_right
+typeset -g POWERLEVEL9K_SHORTEN_DIR_LENGTH=
+
+# }}}
+# Include Other Files in ~/.zsh {{{
+if [ -d ~/.zsh ]; then
+    c=$(ls ~/.zsh | wc -c)
+    if [ $c -gt 0 ]; then
+        for f in ~/.zsh/*.zsh; do
+            source $f
+        done
+    fi
+fi
+
+# }}}
