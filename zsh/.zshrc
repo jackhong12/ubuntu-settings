@@ -33,6 +33,17 @@ bindkey '^O' autosuggest-accept
 # update option
 DISABLE_AUTO_UPDATE="true"
 
+# include other files in ~/.zsh {{{
+if [ -d ~/.zsh ]; then
+    c=$(ls ~/.zsh | wc -c)
+    if [ $c -gt 0 ]; then
+        for f in ~/.zsh/*.zsh; do
+            source $f
+        done
+    fi
+fi
+# }}}
+
 # key mapping {{{
 
 # - show all bind keys
