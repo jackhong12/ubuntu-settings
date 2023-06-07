@@ -413,4 +413,4 @@ unbind C-b
 bind-key c  new-window -c "#{pane_current_path}"
 bind-key % split-window -h -c "#{pane_current_path}"
 bind-key '"' split-window -c "#{pane_current_path}"
-set-option -g default-shell /usr/bin/zsh
+set-option -g default-shell /depot/zsh/zsh-5.8/bin/zsh
