@@ -4,6 +4,21 @@ import argparse
 import os
 import re
 
+class TermColor:
+    green = '\033[1;32m'
+    red   = '\033[1;31m'
+    bold  = '\033[1m'
+    reset = '\033[0m'
+
+def printgreen (msg, end='\n'):
+    print(TermColor.green + msg + TermColor.reset, end=end)
+
+def printred (msg, end='\n'):
+    print(TermColor.red + msg + TermColor.reset, end=end)
+
+def printbold (msg, end='\n'):
+    print(TermColor.bold + msg + TermColor.reset, end=end)
+
 def trim_eol (lines):
     ret = []
     for line in lines:
@@ -74,22 +89,37 @@ def show_all_commands (commands, space=' '):
         maxLen = max(maxLen, len(name))
     
     for name in commands:
-        print(f'{tab}{name}' + ' ' * (maxLen - len(name)), end='')
+        printgreen(f'{tab}{name}' + ' ' * (maxLen - len(name)), end='')
         print(space, end='')
         print(':', end='')
         print(commands[name]['description'])
+
+def print_header (msg, end='\n'):
+    printred(msg, end)
+
+content_tab = '  '
+def print_content (msg, end='\n'):
+    print(f'{content_tab}{msg}', end=end)
+
+header_keywords = ['USAGE', 'EXAMPLE', 'DESCRIPTION']
+def parse_line (line):
+    for keyword in header_keywords:
+        if line.strip() == keyword:
+            print_header(f'{line}')
+            return
+    print_content(line)
 
 def show_command_help (commands, command):
     if not command in commands:
         print(f'No command: {command}')
         return
 
-    tab = ''
     info = commands[command]
-    print(f'{info["name"]}\n')
-    print(f'{tab}{info["description"]}\n')
+    printgreen(f'{info["name"]}\n')
+    print_header('DESCRIPTION')
+    parse_line(f'{info["description"]}\n')
     for detail in info['details']:
-        print(f'{tab}{detail}')
+        parse_line(detail)
 
 parser = argparse.ArgumentParser(
     prog='zsh-help',
