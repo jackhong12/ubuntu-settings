@@ -1,4 +1,4 @@
-
+#!python3
 # zsh_help.py <file.zsh>
 import argparse
 import os
