@@ -128,6 +128,7 @@ parser = argparse.ArgumentParser(
 
 parser.add_argument('filename')
 parser.add_argument("command", nargs='?', default="")
+parser.add_argument("-d", dest="directory")
 
 args = parser.parse_args()
 
@@ -137,6 +138,30 @@ try:
 except:
     print(f"Cannot open file: {args.filename}")
     os._exit(1)
+
+if args.directory != None:
+    files = []
+    try:
+        files = os.listdir(args.directory)
+    except:
+        print(f"No directory: {args.directory}")
+        os._exit(1)
+
+    for file in files:
+        if file[0] == '.':
+            continue
+
+        if args.directory[-1] != '/':
+            file = args.directory + '/' + file
+        else:
+            file = args.directory + file
+
+        try:
+            with open(file) as f:
+                lines += f.readlines()
+        except:
+            print(f"Cannot open file: {file}")
+            os._exit(1)
 
 lines = trim_eol(lines)
 sections = parse_section(lines)

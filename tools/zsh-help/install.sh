@@ -9,9 +9,14 @@ write """
 # zsh-help {{{
 alias zsh_help=`pwd`/zsh_help.py
 
-h () {
-  zsh_help ~/.zshrc $@
+#> zh: Show help messages {{{
+# USAGE
+# $ zh [command]
+zh () {
+  zsh_help -d .zsh ~/.zshrc \$@
 }
+#}}}
 #}}}
 """
 
+mkdir -p ~/.zsh
