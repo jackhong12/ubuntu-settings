@@ -5,6 +5,21 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Functions {{{
+
+#> intrinsic: Useful Functions {{{
+# EXAMPLE 
+# - _info_command: show all commands in the function
+
+# _info_command {{{
+_info_command () {
+  set -x
+}
+#}}}
+
+#}}}
+
+#}}}
 # Basic Alias {{{
 export TZ='Asia/Taipei'
 export TERM="xterm-256color"
