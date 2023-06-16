@@ -13,7 +13,7 @@ alias zsh_help=`pwd`/zsh_help.py
 # USAGE
 # $ zh [command]
 zh () {
-  zsh_help -d .zsh ~/.zshrc \$@
+  zsh_help -d ~/.zsh ~/.zshrc \$@
 }
 #}}}
 #}}}
