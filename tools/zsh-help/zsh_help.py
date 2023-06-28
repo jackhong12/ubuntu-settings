@@ -5,10 +5,12 @@ import os
 import re
 
 class TermColor:
-    green = '\033[1;32m'
-    red   = '\033[1;31m'
-    bold  = '\033[1m'
-    reset = '\033[0m'
+    green     = '\033[1;32m'
+    red       = '\033[1;31m'
+    lightgrey = '\033[1;37m'
+    darkgrey  = '\033[1;90m'
+    bold      = '\033[1m'
+    reset     = '\033[0m'
 
 def printgreen (msg, end='\n'):
     print(TermColor.green + msg + TermColor.reset, end=end)
@@ -18,6 +20,9 @@ def printred (msg, end='\n'):
 
 def printbold (msg, end='\n'):
     print(TermColor.bold + msg + TermColor.reset, end=end)
+
+def printgrey (msg, end='\n'):
+    print(TermColor.darkgrey + msg + TermColor.reset, end=end)
 
 def trim_eol (lines):
     ret = []
@@ -45,12 +50,12 @@ def parse_section (lines):
 
     return ret
 
-cmdReg = re.compile(r'#>\s*([_a-zA-Z0-9\-]+)\s*:\s*([^\s][^{]+)')
+cmdListReg = re.compile(r'#>\s*([_a-zA-Z0-9\-]+)\s*:\s*([^\s][^{]+)')
 def parse_command (section):
     if len(section) == 0:
         return None
 
-    s = cmdReg.search(section[0])
+    s = cmdListReg.search(section[0])
     if s == None:
         return None
     matches = s.groups()
@@ -102,11 +107,24 @@ def print_content (msg, end='\n'):
     print(f'{content_tab}{msg}', end=end)
 
 header_keywords = ['USAGE', 'EXAMPLE', 'DESCRIPTION', 'INFORMATION']
+cmdStmtReg = re.compile(r'(\s*)(\$\s*[a-zA-Z_][_a-zA-Z0-9\-]+)(.*)')
 def parse_line (line):
+    # colorize keywords
     for keyword in header_keywords:
         if line.strip() == keyword:
             print_header(f'{line}')
             return
+    
+    # colorize command
+    # $ cmd ...
+    s = cmdStmtReg.search(line)
+    if s != None:
+        #matches = s.groups()
+        #printgreen(f'{content_tab}{matches[0]}{matches[1]}', end='')
+        #printgrey(f'{matches[2]}')
+        printgrey(f'{content_tab}{line}')
+        return
+
     print_content(line)
 
 def show_command_help (commands, command):
