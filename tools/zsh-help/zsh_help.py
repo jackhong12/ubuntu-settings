@@ -101,7 +101,7 @@ content_tab = '  '
 def print_content (msg, end='\n'):
     print(f'{content_tab}{msg}', end=end)
 
-header_keywords = ['USAGE', 'EXAMPLE', 'DESCRIPTION']
+header_keywords = ['USAGE', 'EXAMPLE', 'DESCRIPTION', 'INFORMATION']
 def parse_line (line):
     for keyword in header_keywords:
         if line.strip() == keyword:
