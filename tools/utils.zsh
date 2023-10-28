@@ -37,6 +37,8 @@ zsh-move-config () {
   set -x
   mkdir -p ~/.zsh
   for f in `pwd`/*.zsh; do
+    # default change __rp_root to current git root directory
+    sed -i -r "s|^__rp_root=.*|__rp_root=$(git-root)|g" $f
     ln -sf $f ~/.zsh
   done
 }

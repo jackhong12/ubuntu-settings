@@ -11,7 +11,9 @@
 # - drunlite: run simple docker
 #   $ drunlite
 
-__rp_docker_path=docker_path_needed_to_replaced
+__rp_root=root_needed_to_replaced
+DIR=$__rp_root/docker
+DOCKERFILE=$DIR/Dockerfile.lite
 IMG_LITE=ubuntu20_lite
 
 # dls {{{
@@ -25,7 +27,6 @@ dls () {
 # dinstall {{{
 
 dinstall () {
-  DOCKERFILE=$__rp_docker_path/Dockerfile.lite
   docker build .                        \
     --file $DOCKERFILE                  \
     --build-arg USER_UID=$(id -g $USER) \
