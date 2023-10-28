@@ -4,5 +4,5 @@ COMMIT_PATH=$ROOT/tools/pre-commit
 tmp_path=`pwd`
 
 cd $COMMIT_PATH
-bash -x remove_rp.zsh
+bash remove_rp.zsh
 cd $tmp_path
