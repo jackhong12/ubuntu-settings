@@ -8,6 +8,10 @@
 # zsh-move-config
 # - Move *.zsh to ~/.zsh
 #   $ zsh-move-config
+#
+# git-root
+# - Show git root directory
+#   $ git-root
 
 # zsh-remove-path {{{
 # zsh-remove-path
@@ -33,5 +37,12 @@ zsh-move-config () {
   done
 }
 #}}} zsh-move-config
+
+# git-root {{{
+
+git-root () {
+  echo $(git rev-parse --show-toplevel)
+}
+#}}} git-root
 
 #}}} utils
