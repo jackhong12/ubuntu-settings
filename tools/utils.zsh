@@ -12,6 +12,10 @@
 # git-root
 # - Show git root directory
 #   $ git-root
+#
+# Colors
+# - _red
+# - _green
 
 # zsh-remove-path {{{
 # zsh-remove-path
@@ -44,5 +48,21 @@ git-root () {
   echo $(git rev-parse --show-toplevel)
 }
 #}}} git-root
+
+# _red {{{
+
+_red () {
+  printf "\033[0;31m$@\033[0m"
+}
+
+#}}} _red
+
+# _green {{{
+
+_green () {
+  printf "\033[0;32m$@\033[0m"
+}
+
+#}}} _green
 
 #}}} utils
