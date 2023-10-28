@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-#> utils {{{
+#> utils: Utilities for zsh {{{
 # zsh-remove-path
 # - Remove variables __rp_*
 #   $ zsh-remove-path [file]
@@ -16,6 +16,7 @@
 # Colors
 # - _red
 # - _green
+# - _color_remove
 #
 # Change folders
 # - _pushd
@@ -73,6 +74,14 @@ _green () {
 }
 
 #}}} _green
+
+# _color_remove {{{
+
+_color_remove () {
+  sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g"
+}
+
+#}}} _color_remove
 
 # _pushd {{{
 

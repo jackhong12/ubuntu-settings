@@ -21,3 +21,4 @@ install zsh
 install tmux
 install fonts
 install tools
+install tools/zsh-help

@@ -1,4 +1,4 @@
-#> docker: docker usage {{{
+#> docker: Docker usage {{{
 # - dls: show all docker images
 #   $ dls
 #

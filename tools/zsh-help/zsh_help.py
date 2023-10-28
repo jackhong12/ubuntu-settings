@@ -139,78 +139,52 @@ def show_command_help (commands, command):
     for detail in info['details']:
         parse_line(detail)
 
-def traverseDirectory (path, category):
-    if os.path.isdir(path):
-        objs = os.listdir(path)
-        childs = []
-        for obj in objs:
-            result = traverseDirectory(path + '/' + obj, category + '/' + obj)
-            childs += result
-        return [{'file': path, 'category': category, 'path': path, 'childs': childs}]
-        
-    elif os.path.isfile(path):
-        return [{'file': path, 'category': category, 'path': path}]
-    return []
+parser = argparse.ArgumentParser(
+    prog='zsh-help',
+    description='Parse zsh scripts and show help messages'
+)
 
+parser.add_argument('filename')
+parser.add_argument("command", nargs='?', default="")
+parser.add_argument("-d", dest="directory")
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        prog='zsh-help',
-        description='Parse zsh scripts and show help messages'
-    )
+args = parser.parse_args()
 
-    parser.add_argument("command", nargs='?', default="")
-    parser.add_argument('-f', dest="files")
-    parser.add_argument("-d", dest="directory")
+try:
+    with open(args.filename) as f:
+        lines = f.readlines()
+except:
+    print(f"Cannot open file: {args.filename}")
+    os._exit(1)
 
-    args = parser.parse_args()
+if args.directory != None:
+    files = []
+    try:
+        files = os.listdir(args.directory)
+    except:
+        print(f"No directory: {args.directory}")
+        os._exit(1)
 
-    fileInfo = [] 
-    if args.files != None:
-        files = args.files.split(':')
-        for f in files:
-            fileInfo += [{'file': f, 'category': '', 'path': f}]
+    for file in files:
+        if file[0] == '.':
+            continue
 
-    import pdb; pdb.set_trace()
-    if args.directory != None:
-        dirs = args.directory.split(':')
-        for d in dirs:
-            fileInfo += traverseDirectory(d, '')
-    #try:
-    #    with open(args.filename) as f:
-    #        lines = f.readlines()
-    #except:
-    #    print(f"Cannot open file: {args.filename}")
-    #    os._exit(1)
+        if args.directory[-1] != '/':
+            file = args.directory + '/' + file
+        else:
+            file = args.directory + file
 
-    #if args.directory != None:
-    #    files = []
-    #    try:
-    #        files = os.listdir(args.directory)
-    #    except:
-    #        print(f"No directory: {args.directory}")
-    #        os._exit(1)
+        try:
+            with open(file) as f:
+                lines += f.readlines()
+        except:
+            print(f"Cannot open file: {file}")
+            os._exit(1)
 
-    #    for file in files:
-    #        if file[0] == '.':
-    #            continue
-
-    #        if args.directory[-1] != '/':
-    #            file = args.directory + '/' + file
-    #        else:
-    #            file = args.directory + file
-
-    #        try:
-    #            with open(file) as f:
-    #                lines += f.readlines()
-    #        except:
-    #            print(f"Cannot open file: {file}")
-    #            os._exit(1)
-
-    #lines = trim_eol(lines)
-    #sections = parse_section(lines)
-    #commands = parse_commands(sections)
-    #if args.command != '':
-    #    show_command_help(commands, args.command)
-    #else:
-    #    show_all_commands(commands)
+lines = trim_eol(lines)
+sections = parse_section(lines)
+commands = parse_commands(sections)
+if args.command != '':
+    show_command_help(commands, args.command)
+else:
+    show_all_commands(commands)
