@@ -153,6 +153,7 @@ args = parser.parse_args()
 try:
     with open(args.filename) as f:
         lines = f.readlines()
+        lines += ['']
 except:
     print(f"Cannot open file: {args.filename}")
     os._exit(1)
@@ -177,6 +178,7 @@ if args.directory != None:
         try:
             with open(file) as f:
                 lines += f.readlines()
+                lines += ['']
         except:
             print(f"Cannot open file: {file}")
             os._exit(1)
