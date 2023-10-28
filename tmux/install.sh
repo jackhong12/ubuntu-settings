@@ -1,14 +1,8 @@
 #!/bin/bash
 
-check_install () {
-    for exe in "$@"; do
-        if ! command -v $exe &> /dev/null; then
-            sudo apt-get install -y $exe
-        fi
-    done
-}
+source ../tools/utils.zsh
 
-check_install tmux
+check-install tmux
 
 ln -sf `pwd`/.tmux.conf ~/
 ln -sf `pwd`/.tmux.conf.local ~/

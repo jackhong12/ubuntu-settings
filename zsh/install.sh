@@ -1,14 +1,8 @@
 #!/bin/bash
 
-check_install () {
-    for exe in "$@"; do
-        if ! command -v $exe &> /dev/null; then
-            sudo apt-get install -y $exe
-        fi
-    done
-}
+source ../tools/utils.zsh
 
-check_install git zsh wget curl powerline autojump
+check-install git zsh wget curl powerline autojump
 
 # install .oh-my-zsh
 if [ ! -d ${HOME}/.oh-my-zsh ]; then
