@@ -7,6 +7,9 @@
 #
 # - drm: remove all images
 #   $ drm
+#
+# - drunlite: run simple docker
+#   $ drunlite
 
 __rp_docker_path=docker_path_needed_to_replaced
 IMG_LITE=ubuntu20_lite
@@ -45,9 +48,9 @@ drm () {
 
 #}}} drm
 
-# drun {{{
+# drunlite {{{
 
-drun () {
+drunlite () {
   img=$IMG_LITE
   docker run                                         \
     -it                                              \
@@ -61,8 +64,7 @@ drun () {
     --privileged=true                                \
     $img                                             \
     bash
-    #-v $(pwd)/.bash_history:/home/jack/.bash_history \
 }
-#}}} drun
+#}}} drunlite
 
 #}}} docker
