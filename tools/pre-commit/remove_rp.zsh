@@ -3,7 +3,7 @@
 source ../utils.zsh
 
 ROOT=$(git-root)
-pushd $ROOT
+_pushd $ROOT
 
 staged_files=$(git diff --name-only --cached --diff-filter=AM)
 # remove private variables
@@ -12,4 +12,4 @@ for f in $staged_files; do
   git add $f
 done
 
-popd
+_popd

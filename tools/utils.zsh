@@ -16,6 +16,10 @@
 # Colors
 # - _red
 # - _green
+#
+# Change folders
+# - _pushd
+# - _popd
 
 # zsh-remove-path {{{
 # zsh-remove-path
@@ -66,5 +70,19 @@ _green () {
 }
 
 #}}} _green
+
+# _pushd {{{
+
+_pushd () {
+  pushd $1 2>&1 > /dev/null
+}
+#}}} _pushd
+
+# _popd {{{
+
+_popd () {
+  popd 2>&1 > /dev/null
+}
+#}}} _popd
 
 #}}} utils
