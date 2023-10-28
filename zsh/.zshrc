@@ -5,21 +5,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Functions {{{
-
-#> intrinsic: Useful Functions {{{
-# EXAMPLE 
-# - _info_command: show all commands in the function
-
-# _info_command {{{
-_info_command () {
-  set -x
-}
-#}}}
-
-#}}}
-
-#}}}
 # Basic Alias {{{
 export TZ='Asia/Taipei'
 export TERM="xterm-256color"
@@ -29,7 +14,8 @@ export LD="LLD"
 export LANG=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-# }}}
+#}}} Basic Alias
+
 # OMZ {{{
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
@@ -55,9 +41,9 @@ bindkey '^O' autosuggest-accept	# bind autocompelet
 # update option
 DISABLE_AUTO_UPDATE="true"
 
-# }}}
-# Key Mapping {{{
+#}}} OMZ
 
+# Key Mapping {{{
 # - show all bind keys
 #     bindkey
 
@@ -70,7 +56,8 @@ bindkey '^E' end-of-line
 bindkey '^J' backward-word
 bindkey '^K' forward-word
 
-#}}}
+#}}} Key Mappnig
+
 # Include Other Files in ~/.zsh {{{
 if [ -d ~/.zsh ]; then
     c=$(ls ~/.zsh | wc -c)
@@ -80,8 +67,7 @@ if [ -d ~/.zsh ]; then
         done
     fi
 fi
-
-# }}}
+#}}} Include other files
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -89,5 +75,4 @@ fi
 # P10k Settings {{{
 typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_from_right
 typeset -g POWERLEVEL9K_SHORTEN_DIR_LENGTH=
-
-# }}}
+#}}} P10k settings
