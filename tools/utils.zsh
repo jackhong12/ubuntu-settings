@@ -1,5 +1,6 @@
 #!/bin/zsh
 
+
 #> utils: Utilities for zsh {{{
 # zsh-remove-path
 # - Remove variables __rp_*
@@ -24,6 +25,8 @@
 #
 # check-install
 #   Download uninstalled packages
+#
+# _info_command
 
 # zsh-remove-path {{{
 # zsh-remove-path
@@ -108,5 +111,10 @@ check-install () {
 }
 
 #}}} check-install
+
+# _info_command {{{
+
+alias _info_command="set -x"
+#}}} _info_command
 
 #}}} utils
