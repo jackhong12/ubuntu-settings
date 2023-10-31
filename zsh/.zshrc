@@ -43,9 +43,14 @@ DISABLE_AUTO_UPDATE="true"
 
 #}}} OMZ
 
-# Key Mapping {{{
-# - show all bind keys
-#     bindkey
+#> key: Zsh Key Mapping {{{
+# Show all bind keys
+# - <ctrl> + h: backspace
+# - <ctrl> + w: kill word
+# - <ctrl> + b: begin of line
+# - <ctrl> + e: end of line
+# - <ctrl> + j: backward a word
+# - <ctrl> + k: forward a word
 
 bindkey '^H' backward-delete-char
 bindkey '^W' kill-word
@@ -56,7 +61,7 @@ bindkey '^E' end-of-line
 bindkey '^J' backward-word
 bindkey '^K' forward-word
 
-#}}} Key Mappnig
+#}}} key
 
 # Include Other Files in ~/.zsh {{{
 if [ -d ~/.zsh ]; then
