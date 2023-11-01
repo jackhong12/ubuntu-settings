@@ -118,3 +118,68 @@ alias _info_command="set -x"
 #}}} _info_command
 
 #}}} utils
+
+#> tmux: tmux utilities {{{
+# tmuxsn: Show current tmux session name
+#
+# tentry: Attach to session entry
+#
+# texist: Tmux checking
+#   - Check whether using tmux
+#     $ texist
+#   - Check whether tmux session exists
+#     $ texist [session name]
+
+# varialbes for tmux
+_tmux_entry_session_name=entry
+
+# tmuxsn {{{
+
+tmuxsn () {
+  session=$(tmux display-message -p '#S')
+  echo "$session"
+}
+#}}} tmuxsn
+
+# tmuxsns {{{
+tmuxsns () {
+  echo $(tmux ls | sed -r "s|([^ ]*):.*|\1|")
+}
+#}}} tmuxsns
+
+# tentry {{{
+
+tentry () {
+  if ! texist $_tmux_entry_session_name; then
+    tmux new -d -s $_tmux_entry_session_name
+  fi
+
+  if texist; then
+    tmux switch -t $_tmux_entry_session_name
+  else
+    tmux attach -t $_tmux_entry_session_name
+  fi
+}
+#}}} tentry
+
+# texist {{{
+
+texist () {
+  if [ "$#" -eq 1 ]; then
+    for sn in `tmuxsns`; do
+      if [[ "$sn" == "$1" ]]; then
+        return 0;
+      fi
+    done
+    return 1;
+  fi
+
+  if [[ -v TMUX ]]; then
+    return 0;
+  else
+    return 1;
+  fi
+}
+#}}} texist
+
+#}}} tmux
