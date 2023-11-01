@@ -163,6 +163,9 @@ info_command_turn_off () {
 #     $ texist
 #   - Check whether tmux session exists
 #     $ texist [session name]
+#
+# tproject
+#   - tinit [project]: initialize a new project
 
 # varialbes for tmux
 _tmux_entry_session_name=entry
@@ -181,18 +184,25 @@ tmuxsns () {
 }
 #}}} tmuxsns
 
-# tentry {{{
+# tattach {{{
 
-tentry () {
-  if ! texist $_tmux_entry_session_name; then
-    tmux new -d -s $_tmux_entry_session_name
+tattach () {
+  if ! texist $1; then
+    tmux new -d -s $1
   fi
 
   if texist; then
-    tmux switch -t $_tmux_entry_session_name
+    tmux switch -t $1
   else
-    tmux attach -t $_tmux_entry_session_name
+    tmux attach -t $1
   fi
+}
+#}}}
+
+# tentry {{{
+
+tentry () {
+  tattach $_tmux_entry_session_name
 }
 #}}} tentry
 
@@ -215,5 +225,36 @@ texist () {
   fi
 }
 #}}} texist
+
+# tproject
+export _tproject_src_root=~/project
+export _tproject_issue_root=~/project
+
+# tinit {{{
+
+# hook function
+tinit_src_dir () {
+}
+
+# hook function
+tinit_issue_dir () {
+}
+
+tinit () {
+  if [ "$#" -ne 1 ]; then
+    return 1;
+  fi
+
+  # initialize resources
+  srcp=$_tproject_src_root/$1
+  issuep=$_tproject_issue_root/$1
+  mkdir -p $srcp
+  mkdir -p $issuep
+  touch $issuep/note.md
+
+  # prepare tmux
+  tattach $1
+}
+#}}} tinit
 
 #}}} tmux
