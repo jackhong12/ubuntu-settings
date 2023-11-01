@@ -26,7 +26,15 @@
 # check-install
 #   Download uninstalled packages
 #
-# _info_command
+# info_command
+# - Start showing information
+#   $ _info
+# - End showing information
+#   $ _info_end
+# - info_command_turn_on
+#   Turn on info command
+# - info_command_turn_off
+#   Turn off info command
 
 # zsh-remove-path {{{
 # zsh-remove-path
@@ -114,7 +122,33 @@ check-install () {
 
 # _info_command {{{
 
+# LEVEL:
+#   1: INFO
+#   2: WARNING
+#   3: ERROR
+export _DEBUG_MSG_LEVEL=1
 alias _info_command="set -x"
+
+_info () {
+  if [[ -v _DEBUG_MSG_LEVEL ]] && [ "$_DEBUG_MSG_LEVEL" -ge 1 ]; then
+    set -x
+  fi
+}
+
+_info_end () {
+  if [[ -v _DEBUG_MSG_LEVEL ]] && [ "$_DEBUG_MSG_LEVEL" -ge 1 ]; then
+    set +x
+  fi
+}
+
+info_command_turn_on () {
+  export _DEBUG_MSG_LEVEL=1
+}
+
+info_command_turn_off () {
+  export _DEBUG_MSG_LEVEL=0
+}
+
 #}}} _info_command
 
 #}}} utils
