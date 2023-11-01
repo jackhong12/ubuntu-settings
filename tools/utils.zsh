@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 
-#> utils: Utilities for zsh {{{
+#> uutils: Utilities for zsh {{{
 # zsh-remove-path
 # - Remove variables __rp_*
 #   $ zsh-remove-path [file]
@@ -151,9 +151,9 @@ info_command_turn_off () {
 
 #}}} _info_command
 
-#}}} utils
+#}}} uutils
 
-#> tmux: tmux utilities {{{
+#> utmux: Utilities for tmux {{{
 # tmuxsn: Show current tmux session name
 #
 # tentry: Attach to session entry
@@ -257,4 +257,4 @@ tinit () {
 }
 #}}} tinit
 
-#}}} tmux
+#}}} utmux
