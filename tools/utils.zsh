@@ -14,6 +14,11 @@
 # - Show git root directory
 #   $ git-root
 #
+# Messages
+# - _msg   (white)
+# - _minfo (green)
+# - _merr  (red)
+#
 # Colors
 # - _red
 # - _green
@@ -86,6 +91,24 @@ _green () {
 
 #}}} _green
 
+# _msg {{{
+_msg () {
+  printf "$@"
+}
+#}}} _msg
+
+# _merr {{{
+_merr () {
+    _red $1
+}
+#}}} _merr
+
+# _minfo {{{
+_minfo () {
+    _green $1
+}
+#}}} _minfo
+
 # _color_remove {{{
 
 _color_remove () {
@@ -156,6 +179,10 @@ info_command_turn_off () {
 #> utmux: Utilities for tmux {{{
 # tmuxsn: Show current tmux session name
 #
+# tmuxsns: Show all tmux session names
+#
+# tprojectns: Show all names of tmux projects
+#
 # tentry: Attach to session entry
 #
 # texist: Tmux checking
@@ -166,9 +193,17 @@ info_command_turn_off () {
 #
 # tproject
 #   - tinit [project]: initialize a new project
+#
+# tj: Quick jump
+#
+# tissuep: The path of issue folder
+#
+# tsrcp: The path of source folder
 
 # varialbes for tmux
 _tmux_entry_session_name=entry
+export _tproject_src_root=~/project
+export _tproject_issue_root=~/project
 
 # tmuxsn {{{
 
@@ -183,6 +218,13 @@ tmuxsns () {
   echo $(tmux ls | sed -r "s|([^ ]*):.*|\1|")
 }
 #}}} tmuxsns
+
+# tprojectns: show all tmux projects {{{
+tprojectns () {
+    ls $_tproject_src_root
+}
+
+# }}} tprojectns
 
 # tattach {{{
 
@@ -226,10 +268,6 @@ texist () {
 }
 #}}} texist
 
-# tproject
-export _tproject_src_root=~/project
-export _tproject_issue_root=~/project
-
 # tinit {{{
 
 # hook function
@@ -256,5 +294,69 @@ tinit () {
   tattach $1
 }
 #}}} tinit
+
+# tissuep: the path of issue folder {{{
+tissuep () {
+    echo $_tproject_issue_root/`tmuxsn`
+}
+# }}} tissuep
+
+# tsrcp: the path of src folder {{{
+tsrcp () {
+    echo $_tproject_src_root/`tmuxsn`
+}
+# }}} tsrcp
+
+# tj: tmux quick jump {{{
+tj () {
+    # without tmux, attach to a tmux session.
+    if ! texist; then
+        if [ "$#" -eq 0 ]; then
+            tentry
+        elif [ "$#" -eq 1 ]; then
+            tattach $1
+        else
+            _merr "Do not support more than 1 argument.\n\n"
+            _msg  "Usage:\n"
+            _msg  "    $ tj\n"
+            _msg  "    $ tj <project>\n"
+            return -1;
+        fi
+        return 0;
+    fi
+
+    # jump to source directory.
+    if [ "$#" -eq 0 ]; then
+        cd `tsrcp`
+    elif [ "$#" -eq 1 ]; then
+        if [ $1 = "src" ]; then
+            # jump to source directory.
+            cd `tsrcp`
+        elif [ $1 = "issue" ]; then
+            # jump to issue directory.
+            cd `tissuep`
+        else
+            # jump to another project.
+            tattach $1
+        fi
+    else
+        _merr "Do not support more than 1 argument.\n\n"
+        _msg  "Usage:\n"
+        _msg  "    $ tj\n"
+        _msg  "    $ tj <src|issue>\n"
+        _msg  "    $ tj <project>\n"
+        return -1;
+    fi
+}
+
+_tj_complete () {
+    if [ "$3" == "tj" ]; then
+        COMPREPLY=( src issue `tprojectns` )
+    fi
+}
+
+complete -F _tj_complete tj
+
+# }}} tj
 
 #}}} utmux
