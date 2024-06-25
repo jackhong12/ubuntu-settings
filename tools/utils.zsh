@@ -13,10 +13,10 @@
 # - Show git root directory
 #   $ git-root
 #
-# Messages
-# - _msg   (white)
-# - _minfo (green)
-# - _merr  (red)
+# Print messages
+# - _pmsg (white)
+# - _pinf (green)
+# - _perr (red)
 #
 # Colors
 # - _red
@@ -96,23 +96,23 @@ _green () {
 
 #}}} _green
 
-# _msg {{{
-_msg () {
+# _pmsg {{{
+_pmsg () {
   printf "$@"
 }
-#}}} _msg
+#}}} _pmsg
 
-# _merr {{{
-_merr () {
+# _perr {{{
+_perr () {
     _red $1
 }
-#}}} _merr
+#}}} _perr
 
-# _minfo {{{
-_minfo () {
+# _pinf {{{
+_pinf () {
     _green $1
 }
-#}}} _minfo
+#}}} _pinf
 
 # _color_remove {{{
 
@@ -154,27 +154,27 @@ check-install () {
 #   1: INFO
 #   2: WARNING
 #   3: ERROR
-export _DEBUG_MSG_LEVEL=1
+export _DEBUG_pmsg_LEVEL=1
 alias _info_command="set -x"
 
 _info () {
-  if [[ -v _DEBUG_MSG_LEVEL ]] && [ "$_DEBUG_MSG_LEVEL" -ge 1 ]; then
+  if [[ -v _DEBUG_pmsg_LEVEL ]] && [ "$_DEBUG_pmsg_LEVEL" -ge 1 ]; then
     set -x
   fi
 }
 
 _info_end () {
-  if [[ -v _DEBUG_MSG_LEVEL ]] && [ "$_DEBUG_MSG_LEVEL" -ge 1 ]; then
+  if [[ -v _DEBUG_pmsg_LEVEL ]] && [ "$_DEBUG_pmsg_LEVEL" -ge 1 ]; then
     set +x
   fi
 }
 
 info_command_turn_on () {
-  export _DEBUG_MSG_LEVEL=1
+  export _DEBUG_pmsg_LEVEL=1
 }
 
 info_command_turn_off () {
-  export _DEBUG_MSG_LEVEL=0
+  export _DEBUG_pmsg_LEVEL=0
 }
 
 #}}} _info_command
@@ -335,10 +335,10 @@ tj () {
         elif [ "$#" -eq 1 ]; then
             tattach $1
         else
-            _merr "Do not support more than 1 argument.\n\n"
-            _msg  "Usage:\n"
-            _msg  "    $ tj\n"
-            _msg  "    $ tj <project>\n"
+            _perr "Do not support more than 1 argument.\n\n"
+            _pmsg  "Usage:\n"
+            _pmsg  "    $ tj\n"
+            _pmsg  "    $ tj <project>\n"
             return -1;
         fi
         return 0;
@@ -359,11 +359,11 @@ tj () {
             tattach $1
         fi
     else
-        _merr "Do not support more than 1 argument.\n\n"
-        _msg  "Usage:\n"
-        _msg  "    $ tj\n"
-        _msg  "    $ tj <src|issue>\n"
-        _msg  "    $ tj <project>\n"
+        _perr "Do not support more than 1 argument.\n\n"
+        _pmsg  "Usage:\n"
+        _pmsg  "    $ tj\n"
+        _pmsg  "    $ tj <src|issue>\n"
+        _pmsg  "    $ tj <project>\n"
         return -1;
     fi
 }
