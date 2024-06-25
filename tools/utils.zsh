@@ -1,6 +1,5 @@
 #!/bin/zsh
 
-
 #> uutils: Utilities for zsh {{{
 # zsh-remove-path
 # - Remove variables __rp_*
@@ -40,6 +39,12 @@
 #   Turn on info command
 # - info_command_turn_off
 #   Turn off info command
+#
+# _test_and_set: If the variable is not defined, define it.
+# - export var1=var2
+#   $ _test_and_set var1=var2
+# - export var1=1
+#   $ _test_and_set var1=1
 
 # zsh-remove-path {{{
 # zsh-remove-path
@@ -174,6 +179,18 @@ info_command_turn_off () {
 
 #}}} _info_command
 
+# _test_and_set: If the variable is not defined, define it {{{
+_test_and_set () {
+    if [[ -z "${(P)1}" ]]; then
+        if [ "$#" -eq 1 ]; then
+            export $1=1
+        else
+            export $1=$2
+        fi
+    fi
+}
+# }}} _test_and_set
+
 #}}} uutils
 
 #> utmux: Utilities for tmux {{{
@@ -199,6 +216,8 @@ info_command_turn_off () {
 # tissuep: The path of issue folder
 #
 # tsrcp: The path of source folder
+
+if [[ -v TPROJECT_ENABLE ]]; then
 
 # varialbes for tmux
 _tmux_entry_session_name=entry
@@ -358,5 +377,7 @@ _tj_complete () {
 complete -F _tj_complete tj
 
 # }}} tj
+
+fi
 
 #}}} utmux

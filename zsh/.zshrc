@@ -63,6 +63,9 @@ bindkey '^K' forward-word
 
 #}}} key
 
+# enable tproject
+export TPROJECT_ENABLE=1
+
 # Include Other Files in ~/.zsh {{{
 if [ -d ~/.zsh ]; then
     c=$(ls ~/.zsh | wc -c)
