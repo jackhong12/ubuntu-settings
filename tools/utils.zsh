@@ -249,9 +249,14 @@ tprojectns () {
 
 tattach () {
   if ! texist $1; then
+    # create a new session
     tmux new -d -s $1
+
+    # move to src folder
+    tmux send-keys -t $1 "cd $_tproject_src_root/$1" ENTER
   fi
 
+  # attach to the session
   if texist; then
     tmux switch -t $1
   else
@@ -327,6 +332,15 @@ tsrcp () {
 # }}} tsrcp
 
 # tj: tmux quick jump {{{
+
+_tj_error () {
+  _perr "tj format error!!!"
+  _pmsg  "Usage:\n"
+  _pmsg  "    $ tj\n"
+  _pmsg  "    $ tj <src | issue>\n"
+  _pmsg  "    $ tj <project> [src | issue]\n"
+}
+
 tj () {
   # without tmux, attach to a tmux session.
   if ! texist; then
@@ -335,42 +349,62 @@ tj () {
     elif [ "$#" -eq 1 ]; then
       tattach $1
     else
-      _perr "Do not support more than 1 argument.\n\n"
-      _pmsg  "Usage:\n"
-      _pmsg  "    $ tj\n"
-      _pmsg  "    $ tj <project>\n"
-      return -1;
+      _tj_error
+      return -1
     fi
     return 0;
   fi
 
-    # jump to source directory.
-    if [ "$#" -eq 0 ]; then
+  # jump to source directory.
+  if [ "$#" -eq 0 ]; then
+    cd `tsrcp`
+
+  elif [ "$#" -eq 1 ]; then
+    if [ $1 = "src" ]; then
+      # jump to source directory.
       cd `tsrcp`
-    elif [ "$#" -eq 1 ]; then
-      if [ $1 = "src" ]; then
-        # jump to source directory.
-        cd `tsrcp`
-      elif [ $1 = "issue" ]; then
-        # jump to issue directory.
-        cd `tissuep`
-      else
-        # jump to another project.
-        tattach $1
-      fi
+    elif [ $1 = "issue" ]; then
+      # jump to issue directory.
+      cd `tissuep`
     else
-      _perr "Do not support more than 1 argument.\n\n"
-      _pmsg  "Usage:\n"
-      _pmsg  "    $ tj\n"
-      _pmsg  "    $ tj <src|issue>\n"
-      _pmsg  "    $ tj <project>\n"
-      return -1;
+      # jump to another project.
+      tinit $1
     fi
-  }
+
+  elif [ "$#" -eq 2 ]; then
+    for k in `tprojectns`; do
+      if [ $1 = $k ]; then
+        if [ $2 = "src" ]; then
+          cd $_tproject_src_root/$1
+        elif [ $2 = "issue" ]; then
+          cd $_tproject_issue_root/$1
+        else
+          _tj_error
+          return -1
+        fi
+        return 0
+      fi
+    done
+    _tj_error
+    return -1
+
+  else
+    _tj_error
+    return -1
+
+  fi
+}
 
 _tj_complete () {
-  if [ "$3" == "tj" ]; then
+  if [ $3 = "tj" ]; then
     COMPREPLY=( src issue `tprojectns` )
+  else
+    for k in `tprojectns`; do
+      if [ $3 = $k ]; then
+        COMPREPLY=( src issue )
+        return 0
+      fi
+    done
   fi
 }
 
