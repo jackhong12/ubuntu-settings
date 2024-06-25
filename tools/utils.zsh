@@ -51,11 +51,11 @@
 # zsh-remove-path [file]
 
 zsh-remove-path () {
-  if [ "$#" -ne 1 ]; then
-    echo "zsh-remove-path [file]"
-    return 1
-  fi
-  sed -i -r "s|^(__rp_)([0-9a-zA-Z_]+)=.*|\1\2=\2_needed_to_replaced|g" $1
+if [ "$#" -ne 1 ]; then
+  echo "zsh-remove-path [file]"
+  return 1
+fi
+sed -i -r "s|^(__rp_)([0-9a-zA-Z_]+)=.*|\1\2=\2_needed_to_replaced|g" $1
 }
 
 #}}} zsh-remove-path
@@ -74,10 +74,10 @@ zsh-move-config () {
 #}}} zsh-move-config
 
 # git-root {{{
-
 git-root () {
   echo $(git rev-parse --show-toplevel)
 }
+
 #}}} git-root
 
 # _red {{{
@@ -104,13 +104,13 @@ _pmsg () {
 
 # _perr {{{
 _perr () {
-    _red $1
+  _red $1
 }
 #}}} _perr
 
 # _pinf {{{
 _pinf () {
-    _green $1
+  _green $1
 }
 #}}} _pinf
 
@@ -139,11 +139,11 @@ _popd () {
 # check-install {{{
 
 check-install () {
-  for exe in "$@"; do
-    if ! command -v $exe &> /dev/null; then
-      sudo apt-get install -y $exe
-    fi
-  done
+for exe in "$@"; do
+  if ! command -v $exe &> /dev/null; then
+    sudo apt-get install -y $exe
+  fi
+done
 }
 
 #}}} check-install
@@ -181,13 +181,13 @@ info_command_turn_off () {
 
 # _test_and_set: If the variable is not defined, define it {{{
 _test_and_set () {
-    if [[ -z "${(P)1}" ]]; then
-        if [ "$#" -eq 1 ]; then
-            export $1=1
-        else
-            export $1=$2
-        fi
+  if [[ -z "${(P)1}" ]]; then
+    if [ "$#" -eq 1 ]; then
+      export $1=1
+    else
+      export $1=$2
     fi
+  fi
 }
 # }}} _test_and_set
 
@@ -240,7 +240,7 @@ tmuxsns () {
 
 # tprojectns: show all tmux projects {{{
 tprojectns () {
-    ls $_tproject_src_root
+  ls $_tproject_src_root
 }
 
 # }}} tprojectns
@@ -316,62 +316,62 @@ tinit () {
 
 # tissuep: the path of issue folder {{{
 tissuep () {
-    echo $_tproject_issue_root/`tmuxsn`
+  echo $_tproject_issue_root/`tmuxsn`
 }
 # }}} tissuep
 
 # tsrcp: the path of src folder {{{
 tsrcp () {
-    echo $_tproject_src_root/`tmuxsn`
+  echo $_tproject_src_root/`tmuxsn`
 }
 # }}} tsrcp
 
 # tj: tmux quick jump {{{
 tj () {
-    # without tmux, attach to a tmux session.
-    if ! texist; then
-        if [ "$#" -eq 0 ]; then
-            tentry
-        elif [ "$#" -eq 1 ]; then
-            tattach $1
-        else
-            _perr "Do not support more than 1 argument.\n\n"
-            _pmsg  "Usage:\n"
-            _pmsg  "    $ tj\n"
-            _pmsg  "    $ tj <project>\n"
-            return -1;
-        fi
-        return 0;
+  # without tmux, attach to a tmux session.
+  if ! texist; then
+    if [ "$#" -eq 0 ]; then
+      tentry
+    elif [ "$#" -eq 1 ]; then
+      tattach $1
+    else
+      _perr "Do not support more than 1 argument.\n\n"
+      _pmsg  "Usage:\n"
+      _pmsg  "    $ tj\n"
+      _pmsg  "    $ tj <project>\n"
+      return -1;
     fi
+    return 0;
+  fi
 
     # jump to source directory.
     if [ "$#" -eq 0 ]; then
-        cd `tsrcp`
+      cd `tsrcp`
     elif [ "$#" -eq 1 ]; then
-        if [ $1 = "src" ]; then
-            # jump to source directory.
-            cd `tsrcp`
-        elif [ $1 = "issue" ]; then
-            # jump to issue directory.
-            cd `tissuep`
-        else
-            # jump to another project.
-            tattach $1
-        fi
+      if [ $1 = "src" ]; then
+        # jump to source directory.
+        cd `tsrcp`
+      elif [ $1 = "issue" ]; then
+        # jump to issue directory.
+        cd `tissuep`
+      else
+        # jump to another project.
+        tattach $1
+      fi
     else
-        _perr "Do not support more than 1 argument.\n\n"
-        _pmsg  "Usage:\n"
-        _pmsg  "    $ tj\n"
-        _pmsg  "    $ tj <src|issue>\n"
-        _pmsg  "    $ tj <project>\n"
-        return -1;
+      _perr "Do not support more than 1 argument.\n\n"
+      _pmsg  "Usage:\n"
+      _pmsg  "    $ tj\n"
+      _pmsg  "    $ tj <src|issue>\n"
+      _pmsg  "    $ tj <project>\n"
+      return -1;
     fi
-}
+  }
 
 _tj_complete () {
-    if [ "$3" == "tj" ]; then
-        COMPREPLY=( src issue `tprojectns` )
-    fi
+  if [ "$3" == "tj" ]; then
+    COMPREPLY=( src issue `tprojectns` )
+  fi
 }
 
 complete -F _tj_complete tj
