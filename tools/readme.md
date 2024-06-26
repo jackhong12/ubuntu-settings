@@ -14,7 +14,7 @@ Utilities for zsh shell.
 if [ -f ~/.zsh/utils.zsh ]; then
   source ~/.zsh/utils.zsh
 else
-  printf "\033[0;31mNot file ~/.zsh/utils.zsh\033[0m"
+  printf "\033[0;31mNot file ~/.zsh/utils.zsh\033[0m\n"
 fi
 # }}}
 ```
