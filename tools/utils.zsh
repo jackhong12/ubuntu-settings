@@ -3,7 +3,7 @@
 if [[ -v __INCLUDE_UTILS_ZSH__ ]]; then
   return 0;
 else
-  export __INCLUDE_UTILS_ZSH__=1
+  __INCLUDE_UTILS_ZSH__=1
 fi
 
 #> uutils: Utilities for zsh {{{
