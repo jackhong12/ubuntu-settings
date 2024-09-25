@@ -1,5 +1,8 @@
 # Ubuntu Settings 
 
+## Index
+- [Zsh Settings](./doc/zsh.md)
+
 ## MobaXterm
 Font Settings
 ```
