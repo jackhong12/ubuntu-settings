@@ -1,5 +1,32 @@
 #!/bin/zsh
 
+# Document {{{
+# @DOC
+# # Utility Library
+# A script supports useful commands.
+#
+# ## Insatll
+# Create a symbolic link of `utils.zsh` under `~/.zsh`.
+# ```bash
+# ./install.sh
+# ```
+#
+# ## Usage
+# Add following code at the beginning of zsh scripts.
+# ```zsh
+# # Include utils.zsh {{{
+# if [ -f ~/.zsh/utils.zsh ]; then
+#   source ~/.zsh/utils.zsh
+# else
+#   printf "\033[0;31mNot file ~/.zsh/utils.zsh\033[0m\n"
+# fi
+# # }}}
+# ```
+#
+# ## Commands
+
+# }}}
+
 if [[ -v __INCLUDE_UTILS_ZSH__ ]]; then
   return 0;
 else
@@ -53,20 +80,28 @@ fi
 #   $ _test_and_set var1=1
 
 # zsh-remove-path {{{
-# zsh-remove-path
-# zsh-remove-path [file]
+# @DOC
+# ### zsh-remove-path
+# For safety issue, remove all variables started with `__rp_`.
+# - zsh-remove-path [file]
+#
 
 zsh-remove-path () {
-if [ "$#" -ne 1 ]; then
-  echo "zsh-remove-path [file]"
-  return 1
-fi
-sed -i -r "s|^(__rp_)([0-9a-zA-Z_]+)=.*|\1\2=\2_needed_to_replaced|g" $1
+  if [ "$#" -ne 1 ]; then
+    echo "zsh-remove-path [file]"
+    return 1
+  fi
+  sed -i -r "s|^(__rp_)([0-9a-zA-Z_]+)=.*|\1\2=\2_needed_to_replaced|g" $1
 }
 
 #}}} zsh-remove-path
 
 # zsh-move-config {{{
+# @DOC
+# ### zsh-move-config
+# Move all *.zsh under the current diretory to `~/.zsh` and resolve variable __rp_root.
+# - zsh-move-config
+#
 
 zsh-move-config () {
   set -x
