@@ -2,7 +2,10 @@
 
 source ../tools/utils.zsh
 
-check-install git zsh wget curl powerline autojump
+check-install git zsh wget curl powerline autojump locales
+
+# gen en_US.UTF-8
+sudo locale-gen en_US.UTF-8
 
 # install .oh-my-zsh
 if [ ! -d ${HOME}/.oh-my-zsh ]; then
