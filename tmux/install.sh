@@ -4,5 +4,5 @@ source ../tools/utils.zsh
 
 check-install tmux
 
-ln -sf `pwd`/.tmux.conf ~/
-ln -sf `pwd`/.tmux.conf.local ~/
+_show_and_run ln -sf `pwd`/.tmux.conf ~/
+_show_and_run ln -sf `pwd`/.tmux.conf.local ~/

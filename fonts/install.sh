@@ -3,6 +3,6 @@
 source ../tools/utils.zsh
 
 for f in `pwd`/*.ttf; do
-  mkdir -p ~/.fonts
-  ln -sf $f ~/.fonts
+  _show_and_run mkdir -p ~/.fonts
+  _show_and_run ln -sf $f ~/.fonts
 done

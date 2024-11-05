@@ -2,4 +2,4 @@
 
 source ../tools/utils.zsh
 
-zsh-move-config
+_run_and_run zsh-move-config
