@@ -232,6 +232,14 @@ _test_and_set () {
 }
 # }}} _test_and_set
 
+# _show_and_run {{{
+_show_and_run () {
+  cmd="$@"
+  _pinf "$ $cmd\n"
+  eval "$cmd"
+}
+# }}} _show_and_run
+
 #}}} uutils
 
 #> utmux: Utilities for tmux {{{
