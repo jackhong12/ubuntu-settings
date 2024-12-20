@@ -36,3 +36,8 @@ llvm_git_update () {
   _show_and_run git merge $llvm_git_name/main
   _show_and_run git push
 }
+
+llvm_format () {
+  _show_and_run git clang-format HEAD~1
+  _show_and_run git commit --amend -a
+}
