@@ -116,7 +116,12 @@ zsh-move-config () {
 
 # git-root {{{
 git-root () {
-  echo $(git rev-parse --show-toplevel)
+  git_root=$(git rev-parse --show-toplevel 2> /dev/null )
+  if [ $? -eq 0 ]; then
+    echo $git_root
+    return 0
+  fi
+  return -1
 }
 
 #}}} git-root
