@@ -51,3 +51,14 @@ _llvm_is_git_init () {
   return $?
 }
 # }}} _llvm_is_git_init
+
+# Note
+#> libc {{{
+# 1. Configuration
+#   $ cmake -S llvm -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="libc"
+# 2. Build
+#   $ ninja -C build libc
+# 3. Test
+#   $ ninja -C build check-libc
+
+#}}}
