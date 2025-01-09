@@ -126,6 +126,18 @@ git-root () {
 
 #}}} git-root
 
+# git-branch-name: Get the current branch name {{{
+git-branch-name () {
+  git_root=$(git rev-parse --abbrev-ref HEAD 2> /dev/null)
+  if [ $? -eq 0 ]; then
+    echo $git_root
+    return 0
+  fi
+  return -1
+}
+
+# }}} git-branch-name
+
 # _red {{{
 
 _red () {
