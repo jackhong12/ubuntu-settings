@@ -146,6 +146,15 @@ git-branch-name () {
 
 # }}} git-branch-name
 
+# p4-root: Get the root of a p4 repo {{{
+p4-root () {
+  root_path=$(p4 info | grep "Client root:" | sed -E "s|Client root: ||g")
+  echo $root_path
+  return $?
+}
+
+# }}} p4-root
+
 # _red {{{
 
 _red () {
