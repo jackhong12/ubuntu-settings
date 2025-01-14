@@ -116,7 +116,7 @@ zsh-move-config () {
 
 # git-is: Whether under a git repo {{{
 git-is () {
-  git status > /dev/null
+  git status 2> /dev/null
   return $?
 }
 
