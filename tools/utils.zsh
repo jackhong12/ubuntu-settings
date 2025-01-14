@@ -114,6 +114,14 @@ zsh-move-config () {
 }
 #}}} zsh-move-config
 
+# git-is: Whether under a git repo {{{
+git-is () {
+  git status > /dev/null
+  return $?
+}
+
+# }}} git-is
+
 # git-root {{{
 git-root () {
   git_root=$(git rev-parse --show-toplevel 2> /dev/null )
