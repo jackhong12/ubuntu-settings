@@ -27,11 +27,16 @@
 
 # }}}
 
+# Only include this file once.
 if [[ -v __INCLUDE_UTILS_ZSH__ ]]; then
   return 0;
 else
   __INCLUDE_UTILS_ZSH__=1
 fi
+
+# Fix no command complete.
+autoload -U +X bashcompinit && bashcompinit
+autoload -U +X compinit && compinit
 
 #> uutils: Utilities for zsh {{{
 # zsh-remove-path
