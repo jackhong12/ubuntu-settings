@@ -212,7 +212,18 @@ _popd () {
 #}}} _popd
 
 # check-install {{{
+check-install () {
+for exe in "$@"; do
+  _perr "check-install will be retired.\n"
+  if ! command -v $exe &> /dev/null; then
+    sudo apt-get install -y $exe
+  fi
+done
+}
 
+#}}} check-install
+
+# check_install: Check whether the binary exists. If not, install it by apt-get {{{
 check-install () {
 for exe in "$@"; do
   if ! command -v $exe &> /dev/null; then
