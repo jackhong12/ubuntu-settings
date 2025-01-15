@@ -20,9 +20,6 @@ grepex () {
 
 # grepr: Grep recursively and solve the links automatically {{{
 grepr () {
-  for f in *; do
-    realf=$(realpath $f)
-    prun grep -rn $@ $realf
-  done
+  grep -R $@
 }
 # }}} grepr
