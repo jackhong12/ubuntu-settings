@@ -15,9 +15,9 @@ vime () {
   else
     # p4 repo
     dir=$(p4-root)
-    _show_and_run _pushd $dir
-    _show_and_run vim $(p4 opened | sed -E "s://pv/icv/([a-z0-9]+\.[_a-z0-9]+/rel|dev)/([^#]*).*:\2:g")
-    _show_and_run _popd
+    prun _pushd $dir
+    prun vim $(p4 opened | sed -E "s://pv/icv/([a-z0-9]+\.[_a-z0-9]+/rel|dev)/([^#]*).*:\2:g")
+    prun _popd
   fi
 }
 

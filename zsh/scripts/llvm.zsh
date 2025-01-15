@@ -1,10 +1,12 @@
 #!/bin/zsh
 
+# include utils.zsh {{{
 if [ -f ~/.zsh/utils.zsh ]; then
   source ~/.zsh/utils.zsh
 else
   printf "\033[0;31mNot file ~/.zsh/utils.zsh\033[0m\n"
 fi
+# }}} include utils.zsh
 
 my_git_name=main
 llvm_git_name=llvm_project_main
@@ -21,17 +23,17 @@ llvm_git_update () {
     _llvm_git_init
   fi
 
-  _show_and_run git fetch $llvm_git_name
-  _show_and_run git checkout $my_git_name
-  _show_and_run git merge $llvm_git_name/main
-  _show_and_run git push
+  prun git fetch $llvm_git_name
+  prun git checkout $my_git_name
+  prun git merge $llvm_git_name/main
+  prun git push
 }
 # }}} llvm_git_update
 
 # llvm_format: Fomrat the code {{{
 llvm_format () {
-  _show_and_run git clang-format HEAD~1
-  _show_and_run git commit --amend -a
+  prun git clang-format HEAD~1
+  prun git commit --amend -a
 }
 # }}} llvm_format
 
@@ -71,7 +73,7 @@ llvm_config () {
     build_projects=$2
   fi
 
-  _show_and_run CC=$__llvm_cc CXX=$__llvm_cxx cmake -S llvm -B $build_path -G Ninja -DCMAKE_BUILD_TYPE=$build_type -DLLVM_ENABLE_PROJECTS="$build_projects"
+  prun CC=$__llvm_cc CXX=$__llvm_cxx cmake -S llvm -B $build_path -G Ninja -DCMAKE_BUILD_TYPE=$build_type -DLLVM_ENABLE_PROJECTS="$build_projects"
 
   info="""
     Project Name   : $project_name
@@ -96,7 +98,7 @@ llvm_build_remove () {
   fi
 
   build_path=$(_llvm_build_path)
-  _show_and_run rm -rf $root_path/$build_path
+  prun rm -rf $root_path/$build_path
 }
 
 # }}} llvm_build_remove
@@ -112,7 +114,7 @@ llvm_build () {
   _pushd $root_path
 
   build_path=$(_llvm_build_path)
-  _show_and_run ninja -C $build_path $@
+  prun ninja -C $build_path $@
 
   _popd
 }
@@ -121,13 +123,13 @@ llvm_build () {
 # Basic function
 # _llvm_git_init {{{
 _llvm_git_init () {
-  _show_and_run git remote add $llvm_git_name $llvm_url
+  prun git remote add $llvm_git_name $llvm_url
 }
 # }}} _llvm_git_init
 
 # _llvm_git_remove {{{
 _llvm_git_remove () {
-  _show_and_run git remote remove $llvm_git_name
+  prun git remote remove $llvm_git_name
 }
 # }}} _llvm_git_remove
 
