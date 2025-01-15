@@ -177,18 +177,6 @@ _pmsg () {
 }
 #}}} _pmsg
 
-# _perr {{{
-_perr () {
-  _red $1
-}
-#}}} _perr
-
-# _pinf {{{
-_pinf () {
-  _green $1
-}
-#}}} _pinf
-
 # _color_remove {{{
 
 _color_remove () {
@@ -211,28 +199,16 @@ _popd () {
 }
 #}}} _popd
 
-# check-install {{{
-check-install () {
-for exe in "$@"; do
-  _perr "check-install will be retired.\n"
-  if ! command -v $exe &> /dev/null; then
-    sudo apt-get install -y $exe
-  fi
-done
-}
-
-#}}} check-install
-
 # check_install: Check whether the binary exists. If not, install it by apt-get {{{
-check-install () {
-for exe in "$@"; do
-  if ! command -v $exe &> /dev/null; then
-    sudo apt-get install -y $exe
-  fi
-done
+check_install () {
+  for exe in "$@"; do
+    if ! command -v $exe &> /dev/null; then
+      prun sudo apt-get install -y $exe
+    fi
+  done
 }
 
-#}}} check-install
+#}}} check_install
 
 # _info_command {{{
 
@@ -277,13 +253,25 @@ _test_and_set () {
 }
 # }}} _test_and_set
 
-# _show_and_run {{{
-_show_and_run () {
+# prun: Print and run {{{
+prun () {
   cmd="$@"
-  _pinf "$ $cmd\n"
+  pinfo "$ $cmd\n"
   eval "$cmd"
 }
-# }}} _show_and_run
+# }}} prun
+
+# perror: Print error {{{
+perror () {
+  _red $1
+}
+#}}} perror
+
+# pinfo: Print information {{{
+pinfo () {
+  _green $1
+}
+#}}} pinfo
 
 #}}} uutils
 
@@ -509,3 +497,34 @@ complete -F _tj_complete tj
 fi
 
 #}}} utmux
+
+
+# check-install {{{
+check-install () {
+  perror "check-install will be retired.\n"
+  check_install $@
+}
+
+#}}} check-install
+
+# _show_and_run {{{
+_show_and_run () {
+  perror "_show_and_run will be retired.\n"
+  prun $@
+}
+# }}} _show_and_run
+
+# _perr {{{
+_perr () {
+  perror "_perr will be retired.\n"
+  _red $1
+}
+#}}} _perr
+
+# _pinf {{{
+_pinf () {
+  perror "_pinf will be retired.\n"
+  _green $1
+}
+#}}} _pinf
+
