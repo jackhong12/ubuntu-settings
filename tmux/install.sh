@@ -2,7 +2,7 @@
 
 source ../tools/utils.zsh
 
-check-install tmux
+check_install tmux
 
-_show_and_run ln -sf `pwd`/.tmux.conf ~/
-_show_and_run ln -sf `pwd`/.tmux.conf.local ~/
+prun ln -sf `pwd`/.tmux.conf ~/
+prun ln -sf `pwd`/.tmux.conf.local ~/
