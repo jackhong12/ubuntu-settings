@@ -31,3 +31,8 @@ fi
 prun ln -sf `pwd`/.zshrc ~/.zshrc
 
 prun sudo chsh -s $(which zsh)
+
+# Link all zsh scripts.
+_pushd scripts
+bash ./install.sh
+_popd
