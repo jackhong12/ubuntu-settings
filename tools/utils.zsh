@@ -35,8 +35,10 @@ else
 fi
 
 # Fix no command complete.
-autoload -U +X bashcompinit && bashcompinit
-autoload -U +X compinit && compinit
+if [[ "$SHELL" == "/usr/bin/bash" ]]; then
+  autoload -U +X bashcompinit && bashcompinit
+  autoload -U +X compinit && compinit
+fi
 
 #> uutils: Utilities for zsh {{{
 # zsh-remove-path
