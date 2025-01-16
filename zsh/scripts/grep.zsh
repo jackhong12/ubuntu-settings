@@ -10,9 +10,14 @@ fi
 
 # grepex: Exclude unimportant files {{{
 grepex () {
+  yacc_opt=""
+  for f in $(find -name "*Parse.c"); do
+    yacc_opt+=" --exclude=$f"
+  done
+
   prun grep \
-    --exclude=\*Parse.c \
     --exclude=tags \
+    $yacc_opt \
     $@
 }
 
