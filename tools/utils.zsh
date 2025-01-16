@@ -121,13 +121,13 @@ zsh-move-config () {
 }
 #}}} zsh-move-config
 
-# git-is: Whether under a git repo {{{
-git-is () {
-  git status 2> /dev/null
+# git_is: Whether under a git repo {{{
+git_is () {
+  git status > /dev/null 2&>1
   return $?
 }
 
-# }}} git-is
+# }}} git_is
 
 # git-root {{{
 git-root () {
@@ -281,6 +281,35 @@ pinfo () {
 #}}} pinfo
 
 #}}} uutils
+
+# check-install {{{
+check-install () {
+  perror "check-install will be retired.\n"
+  check_install $@
+}
+
+#}}} check-install
+
+# _show_and_run {{{
+_show_and_run () {
+  perror "_show_and_run will be retired.\n"
+  prun $@
+}
+# }}} _show_and_run
+
+# _perr {{{
+_perr () {
+  perror "_perr will be retired.\n"
+  _red $1
+}
+#}}} _perr
+
+# _pinf {{{
+_pinf () {
+  perror "_pinf will be retired.\n"
+  _green $1
+}
+#}}} _pinf
 
 #> utmux: Utilities for tmux {{{
 # tmuxsn: Show current tmux session name
@@ -504,34 +533,4 @@ complete -F _tj_complete tj
 fi
 
 #}}} utmux
-
-
-# check-install {{{
-check-install () {
-  perror "check-install will be retired.\n"
-  check_install $@
-}
-
-#}}} check-install
-
-# _show_and_run {{{
-_show_and_run () {
-  perror "_show_and_run will be retired.\n"
-  prun $@
-}
-# }}} _show_and_run
-
-# _perr {{{
-_perr () {
-  perror "_perr will be retired.\n"
-  _red $1
-}
-#}}} _perr
-
-# _pinf {{{
-_pinf () {
-  perror "_pinf will be retired.\n"
-  _green $1
-}
-#}}} _pinf
 
