@@ -10,7 +10,7 @@ fi
 
 # vime: Auto-open changed files {{{
 vime () {
-  if git-is; then
+  if git_is; then
     # git repo
   else
     # p4 repo
