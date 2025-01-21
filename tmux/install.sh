@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../tools/utils.zsh
+source ../zsh/script/utils.zsh
 
 check_install tmux
 

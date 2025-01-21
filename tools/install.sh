@@ -1,5 +1,5 @@
 #!/bin/bash
 
-source ../tools/utils.zsh
+source ../zsh/script/utils.zsh
 
 prun zsh-move-config

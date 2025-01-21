@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-source ../tools/utils.zsh
+source ../zsh/script/utils.zsh
 
 prun check_install git zsh wget curl powerline autojump locales
 

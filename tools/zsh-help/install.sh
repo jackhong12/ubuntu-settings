@@ -1,5 +1,5 @@
 #!/bin/bash
 
-source ../../tools/utils.zsh
+source ../../zsh/script/utils.zsh
 
 zsh-move-config
