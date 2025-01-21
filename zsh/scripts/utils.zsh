@@ -162,6 +162,23 @@ p4-root () {
 
 # }}} p4-root
 
+# p4_is: Whether under a p4 repo {{{
+p4_is () {
+  p4 status > /dev/null 2>&1
+  return $?
+}
+
+# }}} p4_is
+
+# p4_client_root: Get the client root of p4 repo {{{
+p4_client_root () {
+  root_path=$(p4 info | grep "Client root:" | sed -E "s|Client root: ||g")
+  echo $root_path
+  return $?
+}
+
+# }}} p4_client_root
+
 # _red {{{
 
 _red () {

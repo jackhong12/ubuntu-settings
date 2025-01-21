@@ -14,10 +14,11 @@ vime () {
     # git repo
   else
     # p4 repo
-    dir=$(p4-root)
-    prun _pushd $dir
-    prun vim $(p4 opened | sed -E "s://pv/icv/([a-z0-9]+\.[_a-z0-9]+/rel|dev)/([^#]*).*:\2:g")
-    prun _popd
+    dir=$(p4_client_root)
+    files=$(p4 opened | sed -E "s://pv/icv/([a-z0-9]+\.[_a-z0-9]+/rel|dev)/([^#]*).*:$dir/\2:g" | tr '\n' ' ')
+    if [[ ${#files} -gt 0 ]]; then
+      prun vim $files
+    fi
   fi
 }
 
