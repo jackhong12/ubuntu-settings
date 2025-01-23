@@ -12,6 +12,8 @@ fi
 vime () {
   if git_is; then
     # git repo
+    files=$(git status | grep modified | sed "s/\tmodified:   //g" | tr '\n' ' ')
+    prun vim $files
   else
     # p4 repo
     dir=$(p4_client_root)
