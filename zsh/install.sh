@@ -24,7 +24,7 @@ if [ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions ]; then
 fi
 
 # install p10k theme
-if [ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/theme/powerlevel10k ]; then
+if [ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k ]; then
     prun git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 fi
 
@@ -34,5 +34,5 @@ prun sudo chsh -s $(which zsh)
 
 # Link all zsh scripts.
 _pushd scripts
-bash ./install.sh
+zsh ./install.sh
 _popd
