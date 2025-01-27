@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-source ../../zsh/script/utils.zsh
+source ../../zsh/scripts/utils.zsh
 
 ROOT=$(git-root)
 _pushd $ROOT

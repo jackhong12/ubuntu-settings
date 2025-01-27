@@ -328,226 +328,226 @@ _pinf () {
 }
 #}}} _pinf
 
-#> utmux: Utilities for tmux {{{
-# tmuxsn: Show current tmux session name
+##> utmux: Utilities for tmux {{{
+## tmuxsn: Show current tmux session name
+##
+## tmuxsns: Show all tmux session names
+##
+## tprojectns: Show all names of tmux projects
+##
+## tentry: Attach to session entry
+##
+## texist: Tmux checking
+##   - Check whether using tmux
+##     $ texist
+##   - Check whether tmux session exists
+##     $ texist [session name]
+##
+## tproject
+##   - tinit [project]: initialize a new project
+##
+## tj: Quick jump
+##
+## tissuep: The path of issue folder
+##
+## tsrcp: The path of source folder
 #
-# tmuxsns: Show all tmux session names
+#if [[ -v TPROJECT_ENABLE ]]; then
 #
-# tprojectns: Show all names of tmux projects
+## varialbes for tmux
+#_tmux_entry_session_name=entry
+#export _tproject_src_root=~/project
+#export _tproject_issue_root=~/project
 #
-# tentry: Attach to session entry
+## tmuxsn {{{
 #
-# texist: Tmux checking
-#   - Check whether using tmux
-#     $ texist
-#   - Check whether tmux session exists
-#     $ texist [session name]
+#tmuxsn () {
+#  session=$(tmux display-message -p '#S')
+#  echo "$session"
+#}
+##}}} tmuxsn
 #
-# tproject
-#   - tinit [project]: initialize a new project
+## tmuxsns {{{
+#tmuxsns () {
+#  echo $(tmux ls | sed -r "s|([^ ]*):.*|\1|")
+#}
+##}}} tmuxsns
 #
-# tj: Quick jump
+## tprojectns: show all tmux projects {{{
+#tprojectns () {
+#  ls $_tproject_src_root
+#}
 #
-# tissuep: The path of issue folder
+## }}} tprojectns
 #
-# tsrcp: The path of source folder
-
-if [[ -v TPROJECT_ENABLE ]]; then
-
-# varialbes for tmux
-_tmux_entry_session_name=entry
-export _tproject_src_root=~/project
-export _tproject_issue_root=~/project
-
-# tmuxsn {{{
-
-tmuxsn () {
-  session=$(tmux display-message -p '#S')
-  echo "$session"
-}
-#}}} tmuxsn
-
-# tmuxsns {{{
-tmuxsns () {
-  echo $(tmux ls | sed -r "s|([^ ]*):.*|\1|")
-}
-#}}} tmuxsns
-
-# tprojectns: show all tmux projects {{{
-tprojectns () {
-  ls $_tproject_src_root
-}
-
-# }}} tprojectns
-
-# tattach {{{
-
-tattach () {
-  if ! texist $1; then
-    # create a new session
-    tmux new -d -s $1
-
-    # move to src folder
-    tmux send-keys -t $1 "cd $_tproject_src_root/$1" ENTER
-  fi
-
-  # attach to the session
-  if texist; then
-    tmux switch -t $1
-  else
-    tmux attach -t $1
-  fi
-}
-#}}}
-
-# tentry {{{
-
-tentry () {
-  tattach $_tmux_entry_session_name
-}
-#}}} tentry
-
-# texist {{{
-
-texist () {
-  if [ "$#" -eq 1 ]; then
-    for sn in `tmuxsns`; do
-      if [[ "$sn" == "$1" ]]; then
-        return 0;
-      fi
-    done
-    return 1;
-  fi
-
-  if [[ -v TMUX ]]; then
-    return 0;
-  else
-    return 1;
-  fi
-}
-#}}} texist
-
-# tinit {{{
-
-# hook function
-tinit_src_dir () {
-}
-
-# hook function
-tinit_issue_dir () {
-}
-
-tinit () {
-  if [ "$#" -ne 1 ]; then
-    return 1;
-  fi
-
-  # initialize resources
-  srcp=$_tproject_src_root/$1
-  issuep=$_tproject_issue_root/$1
-  mkdir -p $srcp
-  mkdir -p $issuep
-  touch $issuep/note.md
-
-  # prepare tmux
-  tattach $1
-}
-#}}} tinit
-
-# tissuep: the path of issue folder {{{
-tissuep () {
-  echo $_tproject_issue_root/`tmuxsn`
-}
-# }}} tissuep
-
-# tsrcp: the path of src folder {{{
-tsrcp () {
-  echo $_tproject_src_root/`tmuxsn`
-}
-# }}} tsrcp
-
-# tj: tmux quick jump {{{
-
-_tj_error () {
-  _perr "tj format error!!!"
-  _pmsg  "Usage:\n"
-  _pmsg  "    $ tj\n"
-  _pmsg  "    $ tj <src | issue>\n"
-  _pmsg  "    $ tj <project> [src | issue]\n"
-}
-
-tj () {
-  # without tmux, attach to a tmux session.
-  if ! texist; then
-    if [ "$#" -eq 0 ]; then
-      tentry
-    elif [ "$#" -eq 1 ]; then
-      tattach $1
-    else
-      _tj_error
-      return -1
-    fi
-    return 0;
-  fi
-
-  # jump to source directory.
-  if [ "$#" -eq 0 ]; then
-    cd `tsrcp`
-
-  elif [ "$#" -eq 1 ]; then
-    if [ $1 = "src" ]; then
-      # jump to source directory.
-      cd `tsrcp`
-    elif [ $1 = "issue" ]; then
-      # jump to issue directory.
-      cd `tissuep`
-    else
-      # jump to another project.
-      tinit $1
-    fi
-
-  elif [ "$#" -eq 2 ]; then
-    for k in `tprojectns`; do
-      if [ $1 = $k ]; then
-        if [ $2 = "src" ]; then
-          cd $_tproject_src_root/$1
-        elif [ $2 = "issue" ]; then
-          cd $_tproject_issue_root/$1
-        else
-          _tj_error
-          return -1
-        fi
-        return 0
-      fi
-    done
-    _tj_error
-    return -1
-
-  else
-    _tj_error
-    return -1
-
-  fi
-}
-
-_tj_complete () {
-  if [ $3 = "tj" ]; then
-    COMPREPLY=( src issue `tprojectns` )
-  else
-    for k in `tprojectns`; do
-      if [ $3 = $k ]; then
-        COMPREPLY=( src issue )
-        return 0
-      fi
-    done
-  fi
-}
-
-complete -F _tj_complete tj
-
-# }}} tj
-
-fi
-
-#}}} utmux
-
+## tattach {{{
+#
+#tattach () {
+#  if ! texist $1; then
+#    # create a new session
+#    tmux new -d -s $1
+#
+#    # move to src folder
+#    tmux send-keys -t $1 "cd $_tproject_src_root/$1" ENTER
+#  fi
+#
+#  # attach to the session
+#  if texist; then
+#    tmux switch -t $1
+#  else
+#    tmux attach -t $1
+#  fi
+#}
+##}}}
+#
+## tentry {{{
+#
+#tentry () {
+#  tattach $_tmux_entry_session_name
+#}
+##}}} tentry
+#
+## texist {{{
+#
+#texist () {
+#  if [ "$#" -eq 1 ]; then
+#    for sn in `tmuxsns`; do
+#      if [[ "$sn" == "$1" ]]; then
+#        return 0;
+#      fi
+#    done
+#    return 1;
+#  fi
+#
+#  if [[ -v TMUX ]]; then
+#    return 0;
+#  else
+#    return 1;
+#  fi
+#}
+##}}} texist
+#
+## tinit {{{
+#
+## hook function
+#tinit_src_dir () {
+#}
+#
+## hook function
+#tinit_issue_dir () {
+#}
+#
+#tinit () {
+#  if [ "$#" -ne 1 ]; then
+#    return 1;
+#  fi
+#
+#  # initialize resources
+#  srcp=$_tproject_src_root/$1
+#  issuep=$_tproject_issue_root/$1
+#  mkdir -p $srcp
+#  mkdir -p $issuep
+#  touch $issuep/note.md
+#
+#  # prepare tmux
+#  tattach $1
+#}
+##}}} tinit
+#
+## tissuep: the path of issue folder {{{
+#tissuep () {
+#  echo $_tproject_issue_root/`tmuxsn`
+#}
+## }}} tissuep
+#
+## tsrcp: the path of src folder {{{
+#tsrcp () {
+#  echo $_tproject_src_root/`tmuxsn`
+#}
+## }}} tsrcp
+#
+## tj: tmux quick jump {{{
+#
+#_tj_error () {
+#  _perr "tj format error!!!"
+#  _pmsg  "Usage:\n"
+#  _pmsg  "    $ tj\n"
+#  _pmsg  "    $ tj <src | issue>\n"
+#  _pmsg  "    $ tj <project> [src | issue]\n"
+#}
+#
+#tj () {
+#  # without tmux, attach to a tmux session.
+#  if ! texist; then
+#    if [ "$#" -eq 0 ]; then
+#      tentry
+#    elif [ "$#" -eq 1 ]; then
+#      tattach $1
+#    else
+#      _tj_error
+#      return -1
+#    fi
+#    return 0;
+#  fi
+#
+#  # jump to source directory.
+#  if [ "$#" -eq 0 ]; then
+#    cd `tsrcp`
+#
+#  elif [ "$#" -eq 1 ]; then
+#    if [ $1 = "src" ]; then
+#      # jump to source directory.
+#      cd `tsrcp`
+#    elif [ $1 = "issue" ]; then
+#      # jump to issue directory.
+#      cd `tissuep`
+#    else
+#      # jump to another project.
+#      tinit $1
+#    fi
+#
+#  elif [ "$#" -eq 2 ]; then
+#    for k in `tprojectns`; do
+#      if [ $1 = $k ]; then
+#        if [ $2 = "src" ]; then
+#          cd $_tproject_src_root/$1
+#        elif [ $2 = "issue" ]; then
+#          cd $_tproject_issue_root/$1
+#        else
+#          _tj_error
+#          return -1
+#        fi
+#        return 0
+#      fi
+#    done
+#    _tj_error
+#    return -1
+#
+#  else
+#    _tj_error
+#    return -1
+#
+#  fi
+#}
+#
+#_tj_complete () {
+#  if [ $3 = "tj" ]; then
+#    COMPREPLY=( src issue `tprojectns` )
+#  else
+#    for k in `tprojectns`; do
+#      if [ $3 = $k ]; then
+#        COMPREPLY=( src issue )
+#        return 0
+#      fi
+#    done
+#  fi
+#}
+#
+#complete -F _tj_complete tj
+#
+## }}} tj
+#
+#fi
+#
+##}}} utmux
+#

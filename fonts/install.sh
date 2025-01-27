@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../zsh/script/utils.zsh
+source ../zsh/scripts/utils.zsh
 
 for f in `pwd`/*.ttf; do
   prun mkdir -p ~/.fonts

@@ -7,7 +7,7 @@
 
 source ~/.zsh/utils.zsh
 
-__rp_root=root_needed_to_replaced
+__rp_root=/home/jack/ubuntu-settings
 SCRIPT=$__rp_root/tools/zsh-help/zsh_help.py
 
 # zh: show help {{{

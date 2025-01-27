@@ -2,7 +2,7 @@
 
 distribution=`lsb_release -a 2> /dev/null | grep Description | sed 's|Description:[\t ]*||g'`
 
-source ./zsh/script/utils.zsh
+source ./zsh/scripts/utils.zsh
 
 install () {
   _pushd $1
