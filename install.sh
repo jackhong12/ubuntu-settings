@@ -10,7 +10,7 @@ install () {
   echo "================================================================================"
   _green "INSTALL: $1\n"
   echo "================================================================================"
-  bash ./install.sh
+  zsh ./install.sh
   echo "--------------------------------------------------------------------------------"
   echo ""
 
@@ -20,5 +20,5 @@ install () {
 install zsh
 install tmux
 install fonts
-install tools
-install tools/zsh-help
+#install tools
+#install tools/zsh-help
