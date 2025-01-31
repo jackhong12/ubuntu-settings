@@ -29,7 +29,7 @@ tmux_conf_new_session_prompt=false
 #   - true
 #   - false (default)
 #   - disabled (do not modify new-session bindings)
-tmux_conf_new_session_retain_current_path=false
+tmux_conf_new_session_retain_current_path=true
 
 
 # -- windows & pane creation ---------------------------------------------------
@@ -38,7 +38,7 @@ tmux_conf_new_session_retain_current_path=false
 #   - true
 #   - false (default)
 #   - disabled (do not modify new-window bindings)
-tmux_conf_new_window_retain_current_path=false
+tmux_conf_new_window_retain_current_path=true
 
 # new window tries to reconnect ssh sessions, possible values are:
 #   - true
@@ -387,7 +387,7 @@ tmux_conf_urlscan_options="--compact --dedupe"
 #set -g history-limit 10000
 
 # start with mouse mode enabled
-#set -g mouse on
+set -g mouse on
 
 # force Vi mode
 #   really you should export VISUAL or EDITOR environment variable, see manual
