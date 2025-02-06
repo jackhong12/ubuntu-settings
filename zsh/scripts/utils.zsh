@@ -297,6 +297,13 @@ pinfo () {
 }
 #}}} pinfo
 
+# tmuxsn: Get current tmux session name {{{
+tmuxsn () {
+  session=$(tmux display-message -p '#S')
+  echo "$session"
+}
+# }}} tmuxsn
+
 #}}} uutils
 
 # check-install {{{
