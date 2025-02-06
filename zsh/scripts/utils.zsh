@@ -123,7 +123,7 @@ zsh-move-config () {
 
 # git_is: Whether under a git repo {{{
 git_is () {
-  git status > /dev/null 2&>1
+  git status > /dev/null 2>&1
   return $?
 }
 
