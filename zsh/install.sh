@@ -33,6 +33,7 @@ prun ln -sf `pwd`/.zshrc ~/.zshrc
 prun sudo chsh -s $(which zsh)
 
 # Link all zsh scripts.
-_pushd scripts
-zsh ./install.sh
-_popd
+mkdir -p ~/.zsh
+prun ln -sf `pwd`/scripts/utils.zsh ~/.zsh/
+rm -rf ~/.zsh/ubuntu-settings
+prun ln -sf `pwd`/scripts/ ~/.zsh/ubuntu-settings

@@ -76,12 +76,10 @@ fi
 
 # Include Other Files in ~/.zsh {{{
 if [ -d ~/.zsh ]; then
-    c=$(ls ~/.zsh | wc -c)
-    if [ $c -gt 0 ]; then
-        for f in ~/.zsh/*.zsh; do
-            source $f
-        done
-    fi
+  zsh_files=($(find -L ~/.zsh -type f -name "*.zsh"))
+  for file in "${zsh_files[@]}"; do
+    source $file
+  done
 fi
 #}}} Include other files
 
