@@ -35,9 +35,12 @@ else
 fi
 
 # Fix no command complete.
-if [[ "$SHELL" == "/usr/bin/bash" ]]; then
+if [[ $SHELL == "/usr/bin/bash" ]]; then
   autoload -U +X bashcompinit && bashcompinit
   autoload -U +X compinit && compinit
+elif [[ $SHELL == *zsh* ]]; then
+  autoload -Uz compinit
+  compinit
 fi
 
 #> uutils: Utilities for zsh {{{
