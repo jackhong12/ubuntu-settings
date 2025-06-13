@@ -45,13 +45,13 @@ tmux_is_session_exist () {
 
 # }}} tmux_is_session_exist
 
-# tattach: Attatch to a tmux session {{{
+# tmux_attach: Attatch to a tmux session {{{
 # Usage:
-#   tattach <session_name>
+#   tmux_attach <session_name>
 
-tattach () {
+tmux_attach () {
   if [ "$#" -ne 1 ]; then
-    perror "Usage: tattach <session_name>"
+    perror "Usage: tmux_attach <session_name>"
     return 1
   fi
 
@@ -67,14 +67,14 @@ tattach () {
     tmux switch -t $1
   fi
 }
-# }}} tattach
+# }}} tmux_attach
 
-# tentry: Attach to session entry {{{
-tentry () {
-  tattach entry
+# tmux_entry: Attach to session entry {{{
+tmux_entry () {
+  tmux_attach entry
 }
 
-# }}} tentry
+# }}} tmux_entry
 
 typeset -A tpvars
 tpvars[root]=~/projects
@@ -104,7 +104,7 @@ tproject_init () {
   fi
 
   # attach to the new project session
-  tattach $project_name
+  tmux_attach $project_name
 }
 
 # }}} tproject_init
@@ -132,7 +132,7 @@ tproject_load_all () {
   done
 
   # attach to the entry session
-  tentry
+  tmux_entry
 }
 
 # }}} tproject_load_all
@@ -224,7 +224,7 @@ tproject_attach () {
   fi
 
   # attach to the project session
-  tattach $project_name
+  tmux_attach $project_name
 }
 
 _tproject_attach () {
