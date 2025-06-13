@@ -71,7 +71,7 @@ tmux_attach () {
 
 # tmux_entry: Attach to session entry {{{
 tmux_entry () {
-  tmux_attach entry
+  tproject_init entry "Entry point for tmux sessions"
 }
 
 # }}} tmux_entry
@@ -101,7 +101,7 @@ tpvars[info_file]=.info
 
 # tproject_init: Initialize a new project {{{
 # Usage:
-#   $ tproject_init <project_name>
+#   $ tproject_init <project_name> [description]
 tproject_init () {
   if [ "$#" -lt 1 ]; then
     perror "Usage: tproject_init <project_name>\n"
@@ -118,7 +118,7 @@ tproject_init () {
   fi
 
   if [ "$#" -eq 2 ]; then
-    echo $2 > $project_dir/$tpvars[info_file]
+    echo "$2" > $project_dir/$tpvars[info_file]
   fi
 
   # attach to the new project session
