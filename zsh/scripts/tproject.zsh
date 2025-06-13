@@ -98,6 +98,7 @@ tmux_get_current_session_name () {
 typeset -A tpvars
 tpvars[root]=~/projects
 tpvars[info_file]=.info
+tpvars[trash_dir]=~/.tprojects_trash
 
 # tproject_init: Initialize a new project {{{
 # Usage:
@@ -245,7 +246,7 @@ tproject_attach () {
   tmux_attach $project_name
 }
 
-_tproject_attach () {
+_tproject_complete_infos () {
   local -a args
   for project in $(ls $tpvars[root]); do
     project_dir=$tpvars[root]/$project
@@ -259,6 +260,10 @@ _tproject_attach () {
     fi
   done
   _describe "project names" args
+}
+
+_tproject_attach () {
+  _tproject_complete_infos
 }
 
 compdef _tproject_attach tproject_attach
@@ -323,3 +328,39 @@ tproject_cd () {
 }
 
 # }}} tproject_cd
+
+# tproject_delete: Move a project to the trash directory {{{
+# Usage:
+#   $ tproject_delete <project_name>
+tproject_delete () {
+  if [ "$#" -ne 1 ]; then
+    perror "Usage: tproject_delete <project_name>\n"
+    return 1
+  fi
+
+  local project_name=$1
+  local project_dir=$tpvars[root]/$project_name
+
+  if [[ ! -d $project_dir ]]; then
+    perror "Project directory does not exist: $project_dir\n"
+    return 1
+  fi
+
+  mkdir -p $tpvars[trash_dir]
+
+  # Move the project directory to the trash directory
+  prun mv $project_dir $tpvars[trash_dir]/$project_name
+
+  # Close the tmux session if it exists
+  if tmux_is_session_exist $project_name; then
+    prun tmux kill-session -t $project_name
+  fi
+}
+
+_tproject_delete () {
+  _tproject_complete_infos
+}
+
+compdef _tproject_delete tproject_delete
+
+# }}} tproject_delete
