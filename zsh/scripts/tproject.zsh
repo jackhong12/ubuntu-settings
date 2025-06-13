@@ -27,7 +27,7 @@ tmux_show_all_sessions () {
 # tmux_is_session_exist: Check whether tmux session exists {{{
 tmux_is_session_exist () {
   if [[ "$#" -ne 1 ]]; then
-    perror "Usage: tmux_is_session_exist [session_name]"
+    perror "Usage: tmux_is_session_exist [session_name]\n"
     return 1
   fi
 
@@ -51,7 +51,7 @@ tmux_is_session_exist () {
 
 tmux_attach () {
   if [ "$#" -ne 1 ]; then
-    perror "Usage: tmux_attach <session_name>"
+    perror "Usage: tmux_attach <session_name>\n"
     return 1
   fi
 
@@ -76,6 +76,25 @@ tmux_entry () {
 
 # }}} tmux_entry
 
+# tmux_get_current_session_name: Get the current tmux session name {{{
+# Usage:
+#   $ tmux_get_current_session_name
+tmux_get_current_session_name () {
+  if ! tmux_is_active; then
+    perror "Tmux is not active.\n"
+    return 1
+  fi
+
+  local current_session=$(tmux display-message -p '#S')
+  if [[ -z "$current_session" ]]; then
+    perror "No active tmux session found.\n"
+    return 1
+  fi
+
+  echo $current_session
+}
+# }}} tmux_get_current_session_name
+
 typeset -A tpvars
 tpvars[root]=~/projects
 tpvars[info_file]=.info
@@ -85,13 +104,12 @@ tpvars[info_file]=.info
 #   $ tproject_init <project_name>
 tproject_init () {
   if [ "$#" -lt 1 ]; then
-    perror "Usage: tproject_init <project_name>"
+    perror "Usage: tproject_init <project_name>\n"
     return 1
   fi
 
   local project_name=$1
   local project_dir=$tpvars[root]/$project_name
-  is_project_created=1
   if [[ ! -d $project_dir ]]; then
     # create directories
     prun mkdir -p $project_dir
@@ -115,7 +133,7 @@ tproject_init () {
 
 tproject_load_all () {
   if [[ ! -d $tpvars[root] ]]; then
-    perror "Project root directory does not exist: ${tpvars[root]}"
+    perror "Project root directory does not exist: ${tpvars[root]}\n"
     return 1
   fi
 
@@ -143,7 +161,7 @@ tproject_load_all () {
 
 tproject_close_all () {
   if ! tmux_is_active; then
-    perror "Tmux is not active."
+    perror "Tmux is not active.\n"
     return 1
   fi
   prun tmux kill-server
@@ -156,7 +174,7 @@ tproject_close_all () {
 #   $ tproject_set_var <key> <value>
 tproject_set_var () {
   if [ "$#" -ne 2 ]; then
-    perror "Usage: tproject_set_var <key> <value>"
+    perror "Usage: tproject_set_var <key> <value>\n"
     return 1
   fi
 
@@ -164,7 +182,7 @@ tproject_set_var () {
   local value=$2
 
   if [[ -z "$key" || -z "$value" ]]; then
-    perror "Key and value cannot be empty."
+    perror "Key and value cannot be empty.\n"
     return 1
   fi
 
@@ -187,7 +205,7 @@ tproject_set_var () {
 
 tproject_show_vars () {
   if [[ ${#tpvars[@]} -eq 0 ]]; then
-    perror "No tproject variables set."
+    perror "No tproject variables set.\n"
     return 1
   fi
 
@@ -205,7 +223,7 @@ tproject_show_vars () {
 
 tproject_attach () {
   if [ "$#" -ne 1 ]; then
-    perror "Usage: tproject_attach <project_name>"
+    perror "Usage: tproject_attach <project_name>\n"
     return 1
   fi
 
@@ -246,3 +264,62 @@ _tproject_attach () {
 compdef _tproject_attach tproject_attach
 
 # }}} tproject_attach
+
+# tproject_pwd: Get the path of the current project {{{
+# Usage:
+#   $ tproject_pwd
+tproject_pwd () {
+  if ! tmux_is_active; then
+    perror "Tmux is not active.\n"
+    return 1
+  fi
+  local current_session=$(tmux_get_current_session_name)
+  if [[ -z "$current_session" ]]; then
+    perror "No active tmux session found.\n"
+    return 1
+  fi
+
+  echo "$tpvars[root]/$current_session"
+}
+
+# }}} tproject_pwd
+
+# tproject_cd: Change directory to a project {{{
+# Usage:
+#   - Move to the current project directory
+#     $ tproject_cd
+#   - Move to a folder in the current project
+#     $ tproject_cd <folder_name>
+
+tproject_cd () {
+  if ! tmux_is_active; then
+    perror "Tmux is not active.\n"
+    return 1
+  fi
+
+  local current_session=$(tmux_get_current_session_name)
+  if [[ -z "$current_session" ]]; then
+    perror "No active tmux session found.\n"
+    return 1
+  fi
+
+  local project_dir="$tpvars[root]/$current_session"
+
+  if [[ ! -d $project_dir ]]; then
+    perror "Project directory does not exist: $project_dir\n"
+    return 1
+  fi
+
+  if [[ "$#" -eq 0 ]]; then
+    cd $project_dir
+    return 0
+  elif [[ "$#" -eq 1 ]]; then
+    cd "$project_dir/$1"
+    return 0
+  else
+    perror "Usage: tproject_cd [folder_name]\n"
+    return 1
+  fi
+}
+
+# }}} tproject_cd
