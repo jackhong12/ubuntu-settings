@@ -364,3 +364,25 @@ _tproject_delete () {
 compdef _tproject_delete tproject_delete
 
 # }}} tproject_delete
+
+# tproject_clean_trash: Remove projects older than 30 days from the trash directory {{{
+# Usage:
+#   $ tproject_clean_trash
+tproject_clean_trash () {
+  if [[ ! -d $tpvars[trash_dir] ]]; then
+    perror "Trash directory does not exist: ${tpvars[trash_dir]}\n"
+    return 1
+  fi
+
+  local trash_files=($(find $tpvars[trash_dir]/* -maxdepth 0 -type d -mtime +30))
+  if [[ ${#trash_files[@]} -eq 0 ]]; then
+    return 0
+  fi
+
+  pinfo "Trashed Projects:\n"
+  for file in $trash_files; do
+    echo "\t$file"
+  done
+}
+
+# }}} tproject_clean_trash
