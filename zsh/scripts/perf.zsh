@@ -26,7 +26,7 @@ perf_install_in_wsl2 () {
     return 0
   fi
 
-  check_install flex bison libpfm4-dev libtraceevent-dev pkg-config libslang2-dev
+  check_install flex bison libpfm4-dev libtraceevent-dev pkg-config libslang2-dev libelf-dev
   prun git clone https://github.com/microsoft/WSL2-Linux-Kernel --depth 1
   _pushd WSL2-Linux-Kernel/tools/perf
   prun make -j$(nproc)
