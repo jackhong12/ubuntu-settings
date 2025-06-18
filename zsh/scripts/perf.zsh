@@ -30,6 +30,8 @@ perf_install_in_wsl2 () {
   prun git clone https://github.com/microsoft/WSL2-Linux-Kernel --depth 1
   _pushd WSL2-Linux-Kernel/tools/perf
   prun make -j$(nproc)
+  mkdir -p ~/bin
+  ln -sf `pwd`/perf ~/bin/perf
   _popd # WSL2-Linux-Kernel/tools/perf
   _popd # $root_folder
 }
