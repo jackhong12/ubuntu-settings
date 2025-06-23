@@ -2,7 +2,7 @@
 
 source ../zsh/scripts/utils.zsh
 
-prun check_install git zsh wget curl powerline autojump locales
+prun check_install git zsh wget curl powerline autojump locales fzf zoxide
 
 # gen en_US.UTF-8
 prun sudo locale-gen en_US.UTF-8

@@ -32,6 +32,8 @@ plugins=(
     # other plugins
     zsh-autosuggestions
     zsh-syntax-highlighting
+    fzf
+    git
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -94,3 +96,5 @@ export PATH="$HOME/bin:$PATH"
 typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_from_right
 typeset -g POWERLEVEL9K_SHORTEN_DIR_LENGTH=
 #}}} P10k settings
+
+eval "$(zoxide init zsh)"
