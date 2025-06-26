@@ -11,13 +11,13 @@ py_default_name="venv"
 
 # py_venv_init: Initialize Python virtual environment {{{
 py_venv_init() {
-  # Check if Python is installed and version is 3.20
+  # Check if Python is installed and version is 3.12
   if ! command -v python3 &> /dev/null; then
     perror "\033[0;31mPython 3 is not installed.\033[0m\n"
     return 1
   fi
-  if ! python3 --version | grep -q "Python 3.20"; then
-    perror "\033[0;31mPython version is not 3.20.\033[0m\n"
+  if ! python3 --version | grep -q "Python 3.12"; then
+    perror "\033[0;31mPython version is not 3.12.\033[0m\n"
     return 1
   fi
   python3 -m venv $py_default_name
