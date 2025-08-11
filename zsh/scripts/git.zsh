@@ -18,5 +18,5 @@ fi
 # }}} include utils.zsh
 
 git-log-pretty () {
-  git log --graph --decorate --pretty=format:"%C(auto)%h %Cblue%cd%C(auto)%d %s %Cgreen%an" --date=format:"%m/%d"
+  git log --graph --decorate --pretty=format:"%C(auto)%h %Cblue%cd%C(auto)%d %s %Cgreen%an" --date=format:"%m/%d" $@
 }
