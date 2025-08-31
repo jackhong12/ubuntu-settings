@@ -68,14 +68,6 @@ bindkey '^K' forward-word
 # enable tproject
 export TPROJECT_ENABLE=1
 
-# Include utils.zsh first {{{
-if [ -f ~/.zsh/utils.zsh ]; then
-  source ~/.zsh/utils.zsh
-else
-  printf "\033[0;31mNot file ~/.zsh/utils.zsh\033[0m\n"
-fi
-# }}}
-
 # Include Other Files in ~/.zsh {{{
 if [ -d ~/.zsh ]; then
   zsh_files=($(find -L ~/.zsh -type f -name "*.zsh"))

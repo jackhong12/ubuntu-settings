@@ -32,8 +32,30 @@ prun ln -sf `pwd`/.zshrc ~/.zshrc
 
 prun sudo chsh -s $(which zsh)
 
+rm -rf ~/.zsh/zlib
+zlib_path="$(realpath ~/.zsh/zlib)"
+
+# var_init: Initialize value in zlib {{{
+var_init () {
+  # Change the variable in env.zsh
+  local file=scripts/env.zsh
+  local git_root_path=$(git rev-parse --show-toplevel)
+
+  sed -i "s|__SED_UBUNTU_SETTINGS_GIT_ROOT__|$git_root_path|g" $file
+  sed -i "s|__SED_USETTING_ZSH_LIB_PATH__|$zlib_path|g" $file
+
+  prun git update-index --assume-unchanged $file
+
+  printf "Set Env:\n"
+  printf "  __UBUNTU_SETTINGS_GIT_ROOT__: $git_root_path\n"
+  printf "  __USETTING_ZSH_LIB_PATH__:    $zlib_path\n"
+}
+# }}} var_init
+
+# Change default variables.
+var_init
+
 # Link all zsh scripts.
 mkdir -p ~/.zsh
-prun ln -sf `pwd`/scripts/utils.zsh ~/.zsh/
-rm -rf ~/.zsh/ubuntu-settings
-prun ln -sf `pwd`/scripts/ ~/.zsh/ubuntu-settings
+prun ln -sf `pwd`/scripts/utils.zsh ~/.zsh/utils.zsh
+prun ln -sf `pwd`/scripts/ $zlib_path
