@@ -41,6 +41,8 @@ var_init () {
   local file=scripts/env.zsh
   local git_root_path=$(git rev-parse --show-toplevel)
 
+  prun git checkout $file
+
   sed -i "s|__SED_UBUNTU_SETTINGS_GIT_ROOT__|$git_root_path|g" $file
   sed -i "s|__SED_USETTING_ZSH_LIB_PATH__|$zlib_path|g" $file
 
