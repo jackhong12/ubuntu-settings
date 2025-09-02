@@ -25,3 +25,17 @@ vime () {
 }
 
 # }}} vime
+
+# vimp: Open the files in the previous commit {{{
+
+vimp () {
+  if git_is; then
+    # git repo
+    files=$(git diff-tree --no-commit-id --name-only -r HEAD | tr '\n' '$' | sed 's:^:\$:g' | sed 's:\$: \\\n    :g')
+    prun vim $files
+  else
+    # TODO: p4 repo
+  fi
+}
+
+# }}} vimp
