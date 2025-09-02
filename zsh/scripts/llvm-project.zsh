@@ -1,5 +1,13 @@
 #!/bin/zsh
 
+# Only include this file once {{{
+if [[ -v __INCLUDE_LLVM_PROJECT_ZSH__ ]]; then
+  return 0;
+else
+  __INCLUDE_LLVM_PROJECT_ZSH__=1
+fi
+# }}}
+
 # include utils.zsh {{{
 if [ -f ~/.zsh/utils.zsh ]; then
   source ~/.zsh/utils.zsh

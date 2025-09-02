@@ -1,5 +1,13 @@
 #!/bin/zsh
 
+# Only include this file once {{{
+if [[ -v __INCLUDE_CTAGS_ZSH__ ]]; then
+  return 0;
+else
+  __INCLUDE_ENV_CTAGS__=1
+fi
+# }}}
+
 # include utils.zsh {{{
 if [ -f ~/.zsh/utils.zsh ]; then
   source ~/.zsh/utils.zsh

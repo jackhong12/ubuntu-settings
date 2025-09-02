@@ -1,5 +1,13 @@
 #!/bin/zsh
 
+# Only include this file once {{{
+if [[ -v __INCLUDE_PERF_ZSH__ ]]; then
+  return 0;
+else
+  __INCLUDE_PERF_ZSH__=1
+fi
+# }}}
+
 # Usage:
 #   - Analyze performance of a program using perf.
 #     $ perf record -g ./your_program
