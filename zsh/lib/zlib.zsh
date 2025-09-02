@@ -36,3 +36,18 @@ zlib-include () {
 }
 
 # }}} zlib-include
+
+# zlib_include: Function to source zlib if available {{{
+
+zlib_include () {
+  zlib-include $@
+}
+
+# }}} zlib_include
+
+# zlib_path: Function to get the path of a zlib file {{{
+
+zlib_path () {
+  echo "$__UBUNTU_SETTINGS_GIT_ROOT__/zsh/lib"
+}
+# }}} zlib_path

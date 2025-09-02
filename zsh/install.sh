@@ -1,6 +1,7 @@
 #!/bin/zsh
 
-source ../zsh/scripts/utils.zsh
+source ./lib/check_install.zsh
+source ./lib/prun.zsh
 
 prun check_install git zsh wget curl powerline autojump locales fzf zoxide
 
@@ -37,8 +38,8 @@ zlib_path="$(realpath ~/.zsh/zlib)"
 
 # var_init: Initialize value in zlib {{{
 var_init () {
-  # Change the variable in env.zsh
-  local file=scripts/env.zsh
+  # Change the variable in zlib.zsh
+  local file=lib/zlib.zsh
   local git_root_path=$(git rev-parse --show-toplevel)
 
   prun git checkout $file
@@ -59,5 +60,5 @@ var_init
 
 # Link all zsh scripts.
 mkdir -p ~/.zsh
-prun ln -sf `pwd`/scripts/utils.zsh ~/.zsh/utils.zsh
-prun ln -sf `pwd`/scripts/ $zlib_path
+prun ln -sf `pwd`/lib/zlib.zsh ~/.zsh/zlib.zsh
+prun ln -sf `pwd`/lib/ $zlib_path

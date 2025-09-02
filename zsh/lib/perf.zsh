@@ -1,5 +1,11 @@
 #!/bin/zsh
 
+# Usage:
+#   - Analyze performance of a program using perf.
+#     $ perf record -g ./your_program
+#   - Show the recorded performance data.
+#     $ perf report
+
 # Only include this file once {{{
 if [[ -v __INCLUDE_PERF_ZSH__ ]]; then
   return 0;
@@ -8,19 +14,7 @@ else
 fi
 # }}}
 
-# Usage:
-#   - Analyze performance of a program using perf.
-#     $ perf record -g ./your_program
-#   - Show the recorded performance data.
-#     $ perf report
-
-# include utils.zsh {{{
-if [ -f ~/.zsh/utils.zsh ]; then
-  source ~/.zsh/utils.zsh
-else
-  printf "\033[0;31mNot file ~/.zsh/utils.zsh\033[0m\n"
-fi
-# }}} include utils.zsh
+source ~/.zsh/zlib.zsh
 
 # perf_install_in_wsl2: Install perf in WSL2 {{{
 
