@@ -9,6 +9,7 @@ fi
 # }}}
 
 source ~/.zsh/zlib.zsh
+zinclude "print.zsh"
 
 # tmux_is_active: Check whether tmux is active {{{
 tmux_is_active () {

@@ -115,36 +115,6 @@ p4_client_root () {
 
 # }}} p4_client_root
 
-# _red {{{
-
-_red () {
-  printf "\033[0;31m$@\033[0m"
-}
-
-#}}} _red
-
-# _green {{{
-
-_green () {
-  printf "\033[0;32m$@\033[0m"
-}
-
-#}}} _green
-
-# _pmsg {{{
-_pmsg () {
-  printf "$@"
-}
-#}}} _pmsg
-
-# _color_remove {{{
-
-_color_remove () {
-  sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g"
-}
-
-#}}} _color_remove
-
 # _pushd {{{
 
 _pushd () {
@@ -159,17 +129,6 @@ _popd () {
 }
 #}}} _popd
 
-# check_install: Check whether the binary exists. If not, install it by apt-get {{{
-check_install () {
-  for exe in "$@"; do
-    if ! command -v $exe &> /dev/null; then
-      prun sudo apt-get install -y $exe
-    fi
-  done
-}
-
-#}}} check_install
-
 # _test_and_set: If the variable is not defined, define it {{{
 _test_and_set () {
   if [[ -z "${(P)1}" ]]; then
@@ -181,26 +140,6 @@ _test_and_set () {
   fi
 }
 # }}} _test_and_set
-
-# prun: Print and run {{{
-prun () {
-  cmd="$@"
-  pinfo "$ $cmd\n"
-  eval "$cmd"
-}
-# }}} prun
-
-# perror: Print error {{{
-perror () {
-  _red $1
-}
-#}}} perror
-
-# pinfo: Print information {{{
-pinfo () {
-  _green $1
-}
-#}}} pinfo
 
 # tmuxsn: Get current tmux session name {{{
 tmuxsn () {

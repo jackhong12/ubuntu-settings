@@ -9,6 +9,7 @@ fi
 # }}}
 
 source ~/.zsh/zlib.zsh
+zinclude "print.zsh"
 
 __llvm_root_path="$HOME/open-source/llvm-project"
 __llvm_build_path="$HOME/projects/llvm-project"

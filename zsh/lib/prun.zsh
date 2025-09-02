@@ -9,13 +9,23 @@ fi
 # }}}
 
 # prun: Print and run {{{
+if [[ -v __INCLUDE_ZLIB_ZSH__ ]]; then
+  zinclude "prun.zsh"
 
-prun () {
-  cmd="$@"
-  printf "\033[0;32m"
-  printf "$ $cmd\n"
-  printf "\033[0m"
-  eval "$cmd"
-}
+  prun () {
+    cmd="$@"
+    pinfo "$ $cmd"
+    eval "$cmd"
+  }
+
+else
+  prun () {
+    cmd="$@"
+    printf "\033[0;32m"
+    printf "$ $cmd\n"
+    printf "\033[0m"
+    eval "$cmd"
+  }
+fi
 
 # }}} prun
