@@ -9,6 +9,8 @@ fi
 # }}}
 
 source ~/.zsh/zlib.zsh
+zinclude "git.zsh"
+zinclude "prun.zsh"
 
 # vime: Auto-open changed files {{{
 vime () {

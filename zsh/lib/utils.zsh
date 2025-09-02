@@ -9,16 +9,7 @@ fi
 # }}}
 
 source ~/.zsh/zlib.zsh
-
-# Fix no command complete. {{{
-if [[ $SHELL == "/usr/bin/bash" ]]; then
-  autoload -U +X bashcompinit && bashcompinit
-  autoload -U +X compinit && compinit
-elif [[ $SHELL == *zsh* ]]; then
-  autoload -Uz compinit
-  compinit
-fi
-# }}}
+zinclude "git.zsh"
 
 # Basic Commands:
 
@@ -51,60 +42,11 @@ zsh-move-config () {
   mkdir -p ~/.zsh
   for f in `pwd`/*.zsh; do
     # default change __rp_root to current git root directory
-    sed -i -r "s|^__rp_root=.*|__rp_root=$(git-root)|g" $f
+    sed -i -r "s|^__rp_root=.*|__rp_root=$(git_root)|g" $f
     ln -sf $f ~/.zsh
   done
 }
 #}}} zsh-move-config
-
-# git_is: Whether under a git repo {{{
-git_is () {
-  git status > /dev/null 2>&1
-  return $?
-}
-
-# }}} git_is
-
-# git-root {{{
-git-root () {
-  git_root=$(git rev-parse --show-toplevel 2> /dev/null )
-  if [ $? -eq 0 ]; then
-    echo $git_root
-    return 0
-  fi
-  return -1
-}
-
-#}}} git-root
-
-# git-branch-name: Get the current branch name {{{
-git-branch-name () {
-  git_root=$(git rev-parse --abbrev-ref HEAD 2> /dev/null)
-  if [ $? -eq 0 ]; then
-    echo $git_root
-    return 0
-  fi
-  return -1
-}
-
-# }}} git-branch-name
-
-# p4-root: Get the root of a p4 repo {{{
-p4-root () {
-  root_path=$(p4 info | grep "Client root:" | sed -E "s|Client root: ||g")
-  echo $root_path
-  return $?
-}
-
-# }}} p4-root
-
-# p4_is: Whether under a p4 repo {{{
-p4_is () {
-  p4 status > /dev/null 2>&1
-  return $?
-}
-
-# }}} p4_is
 
 # p4_client_root: Get the client root of p4 repo {{{
 p4_client_root () {

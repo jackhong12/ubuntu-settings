@@ -53,7 +53,7 @@ Configure llvm code.
     - $ llvm_config build Release libc
 """
 llvm_config () {
-  root_path=$(git-root)
+  root_path=$(git_root)
   if [ $? -ne 0 ]; then
     _perr "Please run the command under the llvm project.\n"
     exit 1
@@ -93,7 +93,7 @@ llvm_config () {
 # llvm_build_remove: Remove the build of the current project {{{
 
 llvm_build_remove () {
-  root_path=$(git-root)
+  root_path=$(git_root)
   if [ $? -ne 0 ]; then
     _perr "Please run the command under the llvm project.\n"
     exit 1
@@ -107,7 +107,7 @@ llvm_build_remove () {
 
 # llvm_build: Build the code {{{
 llvm_build () {
-  root_path=$(git-root)
+  root_path=$(git_root)
   if [ $? -ne 0 ]; then
     _perr "Please run the command under the llvm project.\n"
     return 1
@@ -144,7 +144,7 @@ _llvm_is_git_init () {
 
 # _llvm_project_name {{{
 _llvm_project_name () {
-  branch=$(git-branch-name)
+  branch=$(git_branch_name)
   if [ $? -eq 0 ]; then
     echo $branch
     return 0
