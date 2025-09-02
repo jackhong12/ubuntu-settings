@@ -9,7 +9,7 @@ fi
 # }}}
 
 source ~/.zsh/zlib.zsh
-zlib_include "prun.zsh"
+zinclude "prun.zsh"
 
 # ln_sf_check: Create a symbolic link if it doesn't exist. {{{
 ln_sf_check () {

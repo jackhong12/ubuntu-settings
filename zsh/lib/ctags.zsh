@@ -9,7 +9,7 @@ fi
 # }}}
 
 source ~/.zsh/zlib.zsh
-zlib_include "prun.zsh"
+zinclude "prun.zsh"
 
 # ctags_gen_c: Generate tags for c code {{{
 

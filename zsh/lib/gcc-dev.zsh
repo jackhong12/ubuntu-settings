@@ -9,7 +9,7 @@ fi
 # }}}
 
 source ~/.zsh/zlib.zsh
-zlib_include "prun.zsh"
+zinclude "prun.zsh"
 
 SRC_DIR=gcc-dev
 

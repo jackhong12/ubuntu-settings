@@ -12,7 +12,7 @@ fi
 # check_install: Check whether the binary exists. If not, install it by apt-get {{{
 
 if [[ -v __INCLUDE_ZLIB_ZSH__ ]]; then
-  zlib_include "prun.zsh"
+  zinclude "prun.zsh"
 
   check_install () {
     for exe in "$@"; do

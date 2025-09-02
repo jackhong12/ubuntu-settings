@@ -37,9 +37,9 @@ zlib-include () {
 
 # }}} zlib-include
 
-# zlib_include: Function to source zlib if available {{{
+# zinclude: Function to source zlib if available {{{
 
-zlib_include () {
+zinclude () {
   zlib-include $@
 }
 

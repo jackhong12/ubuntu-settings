@@ -9,7 +9,7 @@ fi
 # }}}
 
 source ~/.zsh/zlib.zsh
-zlib_include "prun.zsh"
+zinclude "prun.zsh"
 
 # grepex: Exclude unimportant files {{{
 grepex () {
