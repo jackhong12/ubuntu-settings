@@ -26,6 +26,7 @@ install () {
 install zsh
 install tmux
 install fonts
+install nvm
 #install tools
 #install tools/zsh-help
 
