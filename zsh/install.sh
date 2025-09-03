@@ -34,8 +34,8 @@ prun ln -sf `pwd`/.zshrc ~/.zshrc
 prun sudo chsh -s $(which zsh)
 
 rm -rf ~/.zsh/zlib
-mkdir ~/.zsh
-zlib_path="$(realpath ~/.zsh)"/zlib
+mkdir -p "/home/$USER/.zsh"
+zlib_path="/home/$USER/.zsh/zlib"
 
 # var_init: Initialize value in zlib {{{
 var_init () {
@@ -46,7 +46,6 @@ var_init () {
   prun git checkout $file
 
   sed -i "s|__SED_UBUNTU_SETTINGS_GIT_ROOT__|$git_root_path|g" $file
-  sed -i "s|__SED_USETTING_ZSH_LIB_PATH__|$zlib_path|g" $file
 
   prun git update-index --assume-unchanged $file
 
@@ -62,4 +61,4 @@ var_init
 # Link all zsh scripts.
 mkdir -p ~/.zsh
 prun ln -sf `pwd`/lib/zlib.zsh ~/.zsh/zlib.zsh
-prun ln -sf `pwd`/lib/ $zlib_path
+prun ln -sf `pwd`/lib $zlib_path

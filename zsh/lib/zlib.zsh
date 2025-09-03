@@ -9,8 +9,8 @@ fi
 # }}}
 
 
-__UBUNTU_SETTINGS_GIT_ROOT__="__SED_UBUNTU_SETTINGS_GIT_ROOT__"
-__USETTING_ZSH_LIB_PATH__="__SED_USETTING_ZSH_LIB_PATH__"
+__UBUNTU_SETTINGS_GIT_ROOT__="/home/zjackhua/open-source/ubuntu-settings"
+__USETTING_ZSH_LIB_PATH__="/home/$USER/.zsh/zlib"
 
 
 # zlib-include: Function to source zlib if available {{{
@@ -51,3 +51,10 @@ zlib_path () {
   echo "$__UBUNTU_SETTINGS_GIT_ROOT__/zsh/lib"
 }
 # }}} zlib_path
+
+# zlib_repo_path: Function to get the path of a zlib file in the repo {{{
+
+zlib_repo_path () {
+  echo "$__UBUNTU_SETTINGS_GIT_ROOT__"
+}
+# }}} zlib_repo_path
