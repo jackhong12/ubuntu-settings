@@ -1,4 +1,5 @@
 source ~/.zsh/zlib.zsh
+zinclude "cd.zsh"
 zinclude "prun.zsh"
 
 DIR=$(zlib_repo_path)/docker
@@ -16,12 +17,18 @@ dls () {
 # TODO: use buildx instead.
 docker_build_current_folder () {
   current_folder=${PWD:t}
-  prun docker build .                   \
-    --build-arg usern=$USER             \
-    --build-arg USER_UID=$(id -g $USER) \
-    --build-arg USER_GID=$(id -g $USER) \
-    -t $current_folder                  \
+  _pushd $(zlib_repo_path)
+  prun ls
+
+  prun docker build .                      \
+    --file $DIR/$current_folder/Dockerfile \
+    --build-arg usern=$USER                \
+    --build-arg USER_UID=$(id -g $USER)    \
+    --build-arg USER_GID=$(id -g $USER)    \
+    -t $current_folder                     \
     $@
+
+  _popd # $(zlib_repo_path)
 }
 
 # }}} docker_build_current_folder
