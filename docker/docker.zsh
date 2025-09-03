@@ -1,18 +1,8 @@
-#> docker: Docker usage {{{
-# - dls: show all docker images
-#   $ dls
-#
-# - dinstall: install docker images
-#   $ dinstall
-#
-# - drm: remove all images
-#   $ drm
-#
-# - drunlite: run simple docker
-#   $ drunlite
+source ~/.zsh/zlib.zsh
+zinclude "prun.zsh"
 
-__rp_root=root_needed_to_replaced
-DIR=$__rp_root/docker
+
+DIR=$(zlib_repo_path)/docker
 DOCKERFILE=$DIR/Dockerfile.lite
 IMG_LITE=ubuntu20_lite
 
@@ -24,16 +14,19 @@ dls () {
 
 #}}} dls
 
-# dinstall {{{
+# docker_build_current_folder: Build docker image accroding Dockerfile under current folder {{{
 
-dinstall () {
-  docker build .                        \
+docker_build_current_folder () {
+  current_folder=${`pwd`:t}
+  prun docker build .                   \
     --file $DOCKERFILE                  \
+    --build-arg usern=$USER             \
     --build-arg USER_UID=$(id -g $USER) \
     --build-arg USER_GID=$(id -g $USER) \
-    -t $IMG_LITE
+    -t $current_folder
 }
-#}}} dinstall
+
+# }}} docker_build_current_folder
 
 # drm {{{
 # Stop all containers and clean images
@@ -67,5 +60,3 @@ drunlite () {
     bash
 }
 #}}} drunlite
-
-#}}} docker

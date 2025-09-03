@@ -1,9 +1,11 @@
 From ubuntu:20.04
 
+# These argumets can be overwrited by "--build-arg".
 ARG DEBIAN_FRONTEND=noninteractive
 ARG usern=jack
 ARG USER_UID=1000
 ARG USER_GID=1000
+
 RUN groupadd --gid $USER_GID $usern
 RUN useradd --uid $USER_UID --gid $USER_GID -m $usern
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -26,11 +28,6 @@ RUN dpkg-reconfigure keyboard-configuration
 
 # tools
 RUN apt-get install vim tmux -y
-
-# change mirror url
-#RUN sed -i 's/http:\/\/archive\.ubuntu\.com/http:\/\/free\.nchc\.org\.tw/g' /etc/apt/sources.list
-#RUN sed -i 's/http:\/\/security\.ubuntu\.com/http:\/\/free\.nchc\.org\.tw/g' /etc/apt/sources.list
-#RUN apt-get update
 
 RUN echo "$usern ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$usern
 RUN chmod 0440 /etc/sudoers.d/$usern

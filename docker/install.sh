@@ -1,4 +1,5 @@
 #!/bin/bash
 
-source ../zsh/scripts/utils.zsh
-zsh-move-config
+source ../zsh/lib/prun.zsh
+
+prun ln -sf `pwd`/docker.zsh ../zsh/lib/docker.zsh
