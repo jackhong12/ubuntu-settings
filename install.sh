@@ -5,7 +5,10 @@ sudo apt-get install zsh -y
 
 distribution=`lsb_release -a 2> /dev/null | grep Description | sed 's|Description:[\t ]*||g'`
 
-source ./zsh/scripts/utils.zsh
+source ./zsh/lib/prun.zsh
+source ./zsh/lib/cd.zsh
+source ./zsh/lib/print.zsh
+source ./zsh/lib/check_install.zsh
 
 install () {
   _pushd $1

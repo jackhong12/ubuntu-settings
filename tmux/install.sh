@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source ../zsh/scripts/utils.zsh
+source ../zsh/lib/check_install.zsh
+source ../zsh/lib/prun.zsh
 
 check_install tmux
 
