@@ -34,7 +34,8 @@ prun ln -sf `pwd`/.zshrc ~/.zshrc
 prun sudo chsh -s $(which zsh)
 
 rm -rf ~/.zsh/zlib
-zlib_path="$(realpath ~/.zsh/zlib)"
+mkdir ~/.zsh
+zlib_path="$(realpath ~/.zsh)"/zlib
 
 # var_init: Initialize value in zlib {{{
 var_init () {
