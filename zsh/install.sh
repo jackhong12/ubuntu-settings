@@ -11,7 +11,7 @@ prun sudo locale-gen en_US.UTF-8
 # install .oh-my-zsh
 if [ ! -d ${HOME}/.oh-my-zsh ]; then
     prun wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O /tmp/install.sh
-    prun sh /tmp/install.sh
+    prun yes Y | sh /tmp/install.sh
 fi
 
 # install zsh-syntax-highlight
