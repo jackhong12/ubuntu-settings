@@ -57,20 +57,6 @@ p4_client_root () {
 
 # }}} p4_client_root
 
-# _pushd {{{
-
-_pushd () {
-  pushd $1 2>&1 > /dev/null
-}
-#}}} _pushd
-
-# _popd {{{
-
-_popd () {
-  popd 2>&1 > /dev/null
-}
-#}}} _popd
-
 # _test_and_set: If the variable is not defined, define it {{{
 _test_and_set () {
   if [[ -z "${(P)1}" ]]; then

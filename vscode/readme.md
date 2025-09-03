@@ -1,4 +1,4 @@
-# Hints for VSCode :ninja: 
+# Hints for VSCode :ninja:
 
 ## 快捷鍵
 | 快捷鍵                   | 功能             |
@@ -14,6 +14,7 @@
 - Markdown Table Prettifier
     - `選取 table` -> `<右鍵>` -> `Format Selection`
 - GitHub Copilot
+- Paste Image: 允許直接貼上圖片到 Markdown 中。
 
 ## Copilot 快捷鍵用法
 | 快捷鍵                        | 功能             |
