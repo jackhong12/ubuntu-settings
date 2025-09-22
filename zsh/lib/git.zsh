@@ -54,3 +54,17 @@ git_branch_name () {
 }
 
 # }}} git_branch_name
+
+# zgit-show-previous-modified-files: Show previously modified files in the last commit {{{
+
+zgit-show-previous-modified-files () {
+  if ! git_is; then
+    echo "Not a git repository"
+    return -1
+  fi
+  files=$(git diff-tree --no-commit-id --name-only -r HEAD)
+  echo $files
+  return 0
+}
+
+# }}} zgit-show-previous-modified-files
