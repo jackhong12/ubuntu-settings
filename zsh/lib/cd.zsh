@@ -6,7 +6,7 @@
 if [[ -v __INCLUDE_CD_ZSH__ ]]; then
   return 0;
 else
-  __INCLUDE_UTILS_CD__=1
+  __INCLUDE_CD_ZSH__=1
 fi
 # }}}
 

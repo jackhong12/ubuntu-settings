@@ -4,7 +4,7 @@
 if [[ -v __INCLUDE_CTAGS_ZSH__ ]]; then
   return 0;
 else
-  __INCLUDE_ENV_CTAGS__=1
+  __INCLUDE_CTAGS_ZSH__=1
 fi
 # }}}
 

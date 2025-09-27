@@ -4,7 +4,7 @@
 if [[ -v __INCLUDE_VALGRIND_ZSH__ ]]; then
   return 0;
 else
-  __INCLUDE_ENV_VALGRIND__=1
+  __INCLUDE_VALGRIND_ZSH__=1
 fi
 # }}}
 

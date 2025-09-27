@@ -1,5 +1,13 @@
 #!/bin/zsh
 
+# Only include this file once {{{
+if [[ -v __INCLUDE_GIT_ZSH__ ]]; then
+  return 0;
+else
+  __INCLUDE_GIT_ZSH__=1
+fi
+# }}}
+
 # Create a new branch
 #   $ git checkout -b <branch>
 # Switch to a branch

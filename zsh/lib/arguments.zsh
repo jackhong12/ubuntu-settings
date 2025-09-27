@@ -3,7 +3,7 @@
 if [[ -v __INCLUDE_ARGUMENTS_ZSH__ ]]; then
   return 0;
 else
-  __INCLUDE_ARGUMENTS_CTAGS__=1
+  __INCLUDE_ARGUMENTS_ZSH__=1
 fi
 # }}}
 

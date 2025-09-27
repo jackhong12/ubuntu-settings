@@ -21,7 +21,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 export ZSH="$HOME/.oh-my-zsh"
 plugins=(
-    vi-mode
+    #vi-mode
     history
     colored-man-pages
     colorize
@@ -33,7 +33,7 @@ plugins=(
     zsh-autosuggestions
     zsh-syntax-highlighting
     fzf
-    git
+    #git
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -77,8 +77,8 @@ if [ -d ~/.zsh ]; then
 fi
 #}}} Include other files
 
-# Add ~/bin to PATH {{{
-export PATH="$HOME/bin:$PATH"
+# Add ~/.bin to PATH {{{
+export PATH="$HOME/.bin:$PATH"
 # }}}
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -90,3 +90,7 @@ typeset -g POWERLEVEL9K_SHORTEN_DIR_LENGTH=
 #}}} P10k settings
 
 eval "$(zoxide init zsh)"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

@@ -3,7 +3,7 @@
 if [[ -v __INCLUDE_YES_ZSH__ ]]; then
   return 0;
 else
-  __INCLUDE_YES_CTAGS__=1
+  __INCLUDE_YES_ZSH__=1
 fi
 # }}}
 
