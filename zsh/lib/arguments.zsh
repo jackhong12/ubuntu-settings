@@ -7,7 +7,7 @@ else
 fi
 # }}}
 
-source ~/.zsh/zlib
+source ~/.zsh/zlib.zsh
 zinclude "print.zsh"
 
 # Usage:
