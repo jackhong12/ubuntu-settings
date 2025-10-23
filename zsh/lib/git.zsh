@@ -17,17 +17,15 @@ fi
 # Change the commit message without modifying the content
 #   $ git commit --amend
 
-# Only include this file once {{{
-if [[ -v __INCLUDE_GIT_ZSH__ ]]; then
-  return 0;
-else
-  __INCLUDE_GIT_ZSH__=1
-fi
-# }}}
-
 # git-log-pretty: Pretty git log with graph, colors, and decorations {{{
 git-log-pretty () {
   git log --all --graph --decorate --pretty=format:"%C(auto)%h %Cblue%cd%C(auto)%d %s %Cgreen%an" --date=format:"%m/%d" $@
+}
+# }}} git-log-pretty
+
+# git-log-pretty-oneline: Pretty git log with graph, colors, and decorations {{{
+git-log-pretty-oneline () {
+  git log --graph --decorate --pretty=format:"%C(auto)%h %Cblue%cd%C(auto)%d %s %Cgreen%an" --date=format:"%m/%d" $@
 }
 # }}} git-log-pretty
 
