@@ -20,6 +20,7 @@ fi
 # prun: Print and run {{{
 if [[ -v __INCLUDE_ZLIB_ZSH__ ]]; then
   zinclude "prun.zsh"
+  zinclude "print.zsh"
 
   prun () {
     cmd="$@"
