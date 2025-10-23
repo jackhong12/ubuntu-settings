@@ -23,7 +23,7 @@ if [[ -v __INCLUDE_ZLIB_ZSH__ ]]; then
 
   prun () {
     cmd="$@"
-    pinfo "$ $cmd"
+    pinfo "$ $cmd\n"
     eval "$cmd"
     return $?
   }
