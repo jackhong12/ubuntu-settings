@@ -38,7 +38,7 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-bindkey '^O' autosuggest-accept	# bind autocompelet
+bindkey '^J' autosuggest-accept	# bind autocompelet
 
 # update option
 DISABLE_AUTO_UPDATE="true"
@@ -47,21 +47,19 @@ DISABLE_AUTO_UPDATE="true"
 
 #> key: Zsh Key Mapping {{{
 # Show all bind keys
-# - <ctrl> + h: backspace
-# - <ctrl> + w: kill word
 # - <ctrl> + b: begin of line
 # - <ctrl> + e: end of line
-# - <ctrl> + j: backward a word
-# - <ctrl> + k: forward a word
+# - <ctrl> + k: kill a word
+# - <ctrl> + h: backward a word
+# - <ctrl> + l: forward a word
 
-bindkey '^H' backward-delete-char
-bindkey '^W' kill-word
 
 bindkey '^B' beginning-of-line
 bindkey '^E' end-of-line
 
-bindkey '^J' backward-word
-bindkey '^K' forward-word
+bindkey '^K' kill-word
+bindkey '^H' backward-word
+bindkey '^L' forward-word
 
 #}}} key
 
