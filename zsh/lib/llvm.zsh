@@ -9,171 +9,128 @@ fi
 # }}}
 
 source ~/.zsh/zlib.zsh
+zinclude "arguments.zsh"
+zinclude "print.zsh"
+zinclude "yes.zsh"
 
-my_git_name=main
-llvm_git_name=llvm_project_main
-llvm_url="https://github.com/llvm/llvm-project.git"
-__llvm_build_root_dir=build
-__llvm_cc=clang
-__llvm_cxx=clang++
+_llvm_source_path="$HOME/llvm-project"
+_llvm_build_path="$HOME/build"
+_llvm_build_prefix="llvm"
+_llvm_build_info="version.txt"
 
-# llvm_git_update: Sync with the officail branch {{{
-llvm_git_update () {
-  if _llvm_is_git_init; then
-    # nothing
+
+# --type=<Debug|Release>: Specify build type (default: Debug)
+# --suffix=<string>     : Optional suffix for build directory
+# --remake              : If specified, remove existing build directory before configuring
+# --target=<string>     : Specify utility to build
+
+# zllvm_get_build_path: Get LLVM build path {{{
+zllvm_get_build_path () {
+
+  local build_type=$(get_arguments "--type" "Debug" "$@")
+  local build_path="$_llvm_build_path/$_llvm_build_prefix"
+
+  if [[ $build_type == "Release" ]]; then
+    build_path+="_opt"
+  elif [[ $build_type == "Debug" ]]; then
+    build_path+="_dbx"
   else
-    _llvm_git_init
-  fi
-
-  prun git fetch $llvm_git_name
-  prun git checkout $my_git_name
-  prun git merge $llvm_git_name/main
-  prun git push
-}
-# }}} llvm_git_update
-
-# llvm_format: Fomrat the code {{{
-llvm_format () {
-  prun git clang-format HEAD~1
-  prun git commit --amend -a
-}
-# }}} llvm_format
-
-# llvm_config: Configure llvm code {{{
-_llvm_config_help="""
-Configure llvm code.
-  $ llvm_build <build type> <projects>
-
-  - build type: <Release>
-  - projects: <libc>
-
-  - Example:
-    - $ llvm_config: configure the current project
-    - $ llvm_config build
-    - $ llvm_config build Release libc
-"""
-llvm_config () {
-  root_path=$(git_root)
-  if [ $? -ne 0 ]; then
-    _perr "Please run the command under the llvm project.\n"
-    exit 1
-  fi
-
-  project_name=$(_llvm_project_name)
-  build_path=$(_llvm_build_path)
-
-  _pushd $root_path
-
-  if [ $# -eq 0 ]; then
-    build_type=Release
-    build_projects=libc
-  elif [ $# -eq 1 ]; then
-    build_type=$1
-    build_projects=libc
-  elif [ $# -eq 2 ]; then
-    build_type=$1
-    build_projects=$2
-  fi
-
-  prun CC=$__llvm_cc CXX=$__llvm_cxx cmake -S llvm -B $build_path -G Ninja -DCMAKE_BUILD_TYPE=$build_type -DLLVM_ENABLE_PROJECTS="$build_projects"
-
-  info="""
-    Project Name   : $project_name
-    Build Path     : $root_path/$build_path
-    Build Type     : $build_type
-    Enable Projects: $build_projects
-    Compilers      : $__llvm_cc/$__llvm_cxx
-  """
-  _pinf "$info"
-
-  _popd
-}
-# }}} llvm_build
-
-# llvm_build_remove: Remove the build of the current project {{{
-
-llvm_build_remove () {
-  root_path=$(git_root)
-  if [ $? -ne 0 ]; then
-    _perr "Please run the command under the llvm project.\n"
-    exit 1
-  fi
-
-  build_path=$(_llvm_build_path)
-  prun rm -rf $root_path/$build_path
-}
-
-# }}} llvm_build_remove
-
-# llvm_build: Build the code {{{
-llvm_build () {
-  root_path=$(git_root)
-  if [ $? -ne 0 ]; then
-    _perr "Please run the command under the llvm project.\n"
+    perror "Invalid build type '$build_type'. Use 'Debug' or 'Release'.\n"
     return 1
   fi
 
-  _pushd $root_path
-
-  build_path=$(_llvm_build_path)
-  prun ninja -C $build_path $@
-
-  _popd
-}
-# }}} llvm_build
-
-# Basic function
-# _llvm_git_init {{{
-_llvm_git_init () {
-  prun git remote add $llvm_git_name $llvm_url
-}
-# }}} _llvm_git_init
-
-# _llvm_git_remove {{{
-_llvm_git_remove () {
-  prun git remote remove $llvm_git_name
-}
-# }}} _llvm_git_remove
-
-# _llvm_is_git_init {{{
-_llvm_is_git_init () {
-  git remote | grep $llvm_git_name > /dev/null
-  return $?
-}
-# }}} _llvm_is_git_init
-
-# _llvm_project_name {{{
-_llvm_project_name () {
-  branch=$(git_branch_name)
-  if [ $? -eq 0 ]; then
-    echo $branch
-    return 0
+  if suffix=$(get_arguments "--suffix" "" "$@"); then
+    build_path+="_$suffix"
   fi
-  return -1
+
+  echo $build_path
+  return 0
 }
+# }}} zllvm_get_build_path
 
-# }}} _llvm_project_name
+# zllvm_cmake: Configure LLVM build with CMake {{{
 
-# _llvm_build_path {{{
-_llvm_build_path () {
-  branch=$(_llvm_project_name)
-  if [ $? -eq 0 ]; then
-    mkdir -p $__llvm_build_root_dir
-    echo $__llvm_build_root_dir/$branch
-    return 0
+zllvm_cmake () {
+  if [[ ! -d $_llvm_source_path ]]; then
+    perror "LLVM source path '$_llvm_source_path' does not exist.\n"
+    return 1
   fi
-  return -1
+
+  if ! build_path=$(zllvm_get_build_path "$@"); then
+    return 1
+  fi
+
+  local llvm_cmake_path=$_llvm_source_path"/llvm"
+  local cmd="cmake -G Ninja $llvm_cmake_path -DLLVM_ENABLE_PROJECTS=\"clang;lld;compiler-rt\""
+  local build_type=$(get_arguments "--type" "Debug" "$@")
+  if [[ $build_type == "Release" ]]; then
+    cmd+=" -DCMAKE_BUILD_TYPE=Release"
+  elif [[ $build_type == "Debug" ]]; then
+    cmd+=" -DCMAKE_BUILD_TYPE=Debug"
+  else
+    perror "Invalid build type '$build_type'. Use 'Debug' or 'Release'.\n"
+    return 1
+  fi
+
+  if [[ -d $build_path ]]; then
+    if check_arguments "--remake" "$@"; then
+      printf "Removing existing build directory at '$build_path'.\n"
+      if check_yes; then
+        pinfo "Removing build directory...\n"
+        rm -rf $build_path
+      fi
+    fi
+  fi
+
+  if [[ -d $build_path ]]; then
+    pinfo "Cmake file already exists at '$build_path'. Skipping cmake configuration.\n"
+    return 0
+  else
+    mkdir -p $build_path
+  fi
+
+  local current_path=$(pwd)
+  cd $build_path
+  prun "$cmd"
+
+  cd $_llvm_source_path
+  git_branch=$(git rev-parse --abbrev-ref HEAD)
+
+  cd $build_path
+  echo "LLVM Build Information" > $_llvm_build_info
+  echo "- Build Type: $build_type" >> $_llvm_build_info
+  echo "- Git Branch: $git_branch" >> $_llvm_build_info
+  echo "- Build Time: $(date)" >> $_llvm_build_info
+  echo "- Cmake: $cmd" >> $_llvm_build_info
+
+  cd $current_path
 }
 
-# }}} _llvm_build_path
+# }}} zllvm_cmake
 
-# Note
-#> libc {{{
-# 1. Configuration
-#   $ cmake -S llvm -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="libc"
-# 2. Build
-#   $ ninja -C build libc
-# 3. Test
-#   $ ninja -C build check-libc
 
-#}}}
+# zllvm_build: Build LLVM using Ninja {{{
+
+zllvm_build () {
+  if ! zllvm_cmake "$@"; then
+    return 1
+  fi
+
+  if ! build_path=$(zllvm_get_build_path "$@"); then
+    return 1
+  fi
+
+  local current_path=$(pwd)
+  prun "cd $build_path"
+
+  if target=$(get_arguments "--target" "" "$@"); then
+    prun "ninja -j $(nproc) $target"
+    return 0
+  else
+    prun "ninja -j $(nproc)"
+  fi
+
+  cd $current_path
+}
+
+# }}} zllvm_build
