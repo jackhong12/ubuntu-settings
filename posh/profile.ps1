@@ -1,4 +1,3 @@
-Invoke-Expression (&starship init powershell)
 oh-my-posh init pwsh --config ~/myposhconfig.json | Invoke-Expression
 
 function Clean-Path {
