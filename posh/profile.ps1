@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Invoke-Expression (&starship init powershell)
 oh-my-posh init pwsh --config "$PoshDir\myposhconfig.json" | Invoke-Expression
 
