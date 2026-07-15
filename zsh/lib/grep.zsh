@@ -47,4 +47,4 @@ grepr () {
 }
 # }}} grepr
 
-alias grepp="grep --exclude-dir={.git,.cache} --exclude=\"*.profile\" "
+alias grepp="grep --exclude-dir={.git,.cache} --exclude=\"*.profile\" --exclude=\"*.vcxproj\" --exclude=\"*.mk\" --exclude=\"*.json\" --exclude=\"*.vcproj\" "
