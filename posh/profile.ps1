@@ -6,6 +6,7 @@ Set-PSReadLineOption -PredictionSource History
 
 # Source other settings
 . "$PoshDir\lib\path.ps1"
+. "$PoshDir\lib\vim.ps1"
 
 # Source local settings
 $localProfile = "$HOME\local.ps1"
