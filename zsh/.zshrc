@@ -79,6 +79,9 @@ fi
 export PATH="$HOME/.bin:$PATH"
 # }}}
 
+# Source local zsh config if it exists
+[[ -f ~/.local.zsh ]] && source ~/.local.zsh
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
