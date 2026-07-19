@@ -66,6 +66,14 @@ bindkey '^L' forward-word
 # enable tproject
 export TPROJECT_ENABLE=1
 
+# Load the zsh library from ZSH_LIB_PATH (zsh/lib) {{{
+# ZSH_LIB_PATH is exported by the generated ~/.zshrc.
+if [[ -n "$ZSH_LIB_PATH" && -f "$ZSH_LIB_PATH/zlib.zsh" ]]; then
+  source "$ZSH_LIB_PATH/zlib.zsh"
+  zinclude_all
+fi
+#}}} Load zsh library
+
 # Include Other Files in ~/.zsh {{{
 if [ -d ~/.zsh ]; then
   zsh_files=($(find -L ~/.zsh -type f -name "*.zsh"))
