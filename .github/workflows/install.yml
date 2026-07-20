@@ -31,5 +31,5 @@ jobs:
           cd /tmp/zunit-install && zsh build.zsh
           sudo install /tmp/zunit-install/zunit /usr/local/bin/zunit
 
-      - name: Run zlib tests
-        run: zunit zsh/test/zlib.zunit
+      - name: Run tests
+        run: zsh zsh/test.sh
