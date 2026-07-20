@@ -1,6 +1,8 @@
 #!/bin/zsh
 
-for f in test/**/*.zunit(N); do
+script_dir=${0:A:h}
+
+for f in $script_dir/test/**/*.zunit(N); do
   echo "=== $f ==="
   zunit "$f"
 done

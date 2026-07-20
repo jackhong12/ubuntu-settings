@@ -88,10 +88,10 @@ Local machine overrides go in `~/local.ps1` (not tracked).
 ## Testing (`zsh/test/`)
 
 Tests are written in [zunit](https://zunit.xyz/) and live in `zsh/test/`.
-Run all tests from the `zsh/` directory:
+Run all tests from anywhere in the repo:
 
 ```zsh
-zsh test.sh
+zsh zsh/test.sh
 ```
 
 **Rules when modifying `zsh/lib/`:**
