@@ -1,6 +1,5 @@
 #!/bin/zsh
 
-source ~/.zsh/zlib.zsh
 zinclude "git.zsh"
 zinclude "prun.zsh"
 

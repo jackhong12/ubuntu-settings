@@ -6,7 +6,6 @@
 #   - Show the recorded performance data.
 #     $ perf report
 
-source ~/.zsh/zlib.zsh
 
 # perf_install_in_wsl2: Install perf in WSL2 {{{
 

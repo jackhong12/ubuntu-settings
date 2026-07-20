@@ -1,5 +1,4 @@
 
-source ~/.zsh/zlib.zsh
 
 py_default_name="venv"
 

@@ -1,6 +1,5 @@
 #!/bin/zsh
 
-source ~/.zsh/zlib.zsh
 zinclude "prun.zsh"
 
 # ln_sf_check: Create a symbolic link if it doesn't exist. {{{

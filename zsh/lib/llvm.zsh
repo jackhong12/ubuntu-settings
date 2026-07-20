@@ -1,6 +1,5 @@
 #!/bin/zsh
 
-source ~/.zsh/zlib.zsh
 zinclude "arguments.zsh"
 zinclude "print.zsh"
 zinclude "yes.zsh"

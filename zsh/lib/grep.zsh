@@ -1,6 +1,5 @@
 #!/bin/zsh
 
-source ~/.zsh/zlib.zsh
 zinclude "prun.zsh"
 
 # grepex: Exclude unimportant files {{{

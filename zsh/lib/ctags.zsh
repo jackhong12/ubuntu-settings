@@ -1,6 +1,5 @@
 #!/bin/zsh
 
-source ~/.zsh/zlib.zsh
 zinclude "prun.zsh"
 
 # ctags_gen_c: Generate tags for c code {{{

@@ -1,6 +1,5 @@
 #!/bin/zsh
 
-source ~/.zsh/zlib.zsh
 zinclude "prun.zsh"
 
 # cl_to_spirv: Compile and generate spv files {{{

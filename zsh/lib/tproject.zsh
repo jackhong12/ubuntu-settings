@@ -1,6 +1,5 @@
 #!/bin/zsh
 
-source ~/.zsh/zlib.zsh
 zinclude "print.zsh"
 
 # tmux_is_active: Check whether tmux is active {{{

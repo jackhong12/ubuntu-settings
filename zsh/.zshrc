@@ -74,14 +74,10 @@ if [[ -n "$ZSH_LIB_PATH" && -f "$ZSH_LIB_PATH/zlib.zsh" ]]; then
 fi
 #}}} Load zsh library
 
-# Include Other Files in ~/.zsh {{{
-if [ -d ~/.zsh ]; then
-  zsh_files=($(find -L ~/.zsh -type f -name "*.zsh"))
-  for file in "${zsh_files[@]}"; do
-    source $file
-  done
-fi
-#}}} Include other files
+# include zlib
+_current_folder=${0:A:h}
+source "$_current_folder/lib/zlib.zsh"
+zinclude_all
 
 # Add ~/.bin to PATH {{{
 export PATH="$HOME/.bin:$PATH"

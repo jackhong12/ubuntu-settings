@@ -1,5 +1,4 @@
 
-source ~/.zsh/zlib.zsh
 zinclude "print.zsh"
 
 # Usage:
