@@ -1,0 +1,57 @@
+#!/usr/bin/env zunit
+
+@setup {
+  ZLIB_DIR="$(git rev-parse --show-toplevel)/zsh/lib"
+  source "$ZLIB_DIR/cd.zsh"
+  _original_dir=$PWD
+}
+
+@teardown {
+  cd "$_original_dir"
+}
+
+# --- _pushd / _popd ---
+
+@test '_pushd changes directory' {
+  local target=$(mktemp -d)
+  _pushd "$target"
+  assert "$PWD" same_as "$target"
+  rm -rf "$target"
+}
+
+@test '_popd returns to previous directory' {
+  local target=$(mktemp -d)
+  _pushd "$target"
+  _popd
+  assert "$PWD" same_as "$_original_dir"
+  rm -rf "$target"
+}
+
+@test '_pushd and _popd produce no output' {
+  local target=$(mktemp -d)
+  # run executes in a subshell, so the stack change from _pushd does not
+  # persist back to the parent. _popd must be tested after a real _pushd
+  # in the parent so the stack is non-empty when the subshell runs it.
+  run _pushd "$target"
+  assert "$output" is_empty
+  _pushd "$target"
+  run _popd
+  assert "$output" is_empty
+  rm -rf "$target"
+}
+
+# --- _showd ---
+
+@test '_showd shows directory stack' {
+  local target=$(mktemp -d)
+  _pushd "$target"
+  run _showd
+  assert "$output" contains "$target"
+  _popd
+  rm -rf "$target"
+}
+
+@test '_showd output includes line numbers' {
+  run _showd
+  assert "$output" matches '^[[:space:]]*[0-9]'
+}

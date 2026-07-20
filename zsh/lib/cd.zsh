@@ -16,3 +16,10 @@ _popd () {
 }
 #}}} _popd
 
+# _showd {{{
+
+_showd () {
+  dirs -v
+}
+#}}} _showd
+
