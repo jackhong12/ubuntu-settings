@@ -14,3 +14,22 @@ jobs:
 
       - name: Run install.sh
         run: bash ./install.sh
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install zsh
+        run: sudo apt-get install -y zsh
+
+      - name: Install zunit
+        run: |
+          git clone --depth=1 https://github.com/molovo/revolver /tmp/revolver-install
+          sudo install /tmp/revolver-install/revolver /usr/local/bin/revolver
+          git clone --depth=1 https://github.com/zunit-zsh/zunit.git /tmp/zunit-install
+          cd /tmp/zunit-install && zsh build.zsh
+          sudo install /tmp/zunit-install/zunit /usr/local/bin/zunit
+
+      - name: Run zlib tests
+        run: zunit zsh/test/zlib.zunit

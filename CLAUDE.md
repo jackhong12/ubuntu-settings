@@ -84,3 +84,18 @@ Local machine overrides go in `~/local.ps1` (not tracked).
 
 - Zsh: `~/.local.zsh` — sourced last by `.zshrc`
 - PowerShell: `~/local.ps1` — sourced last by `profile.ps1`
+
+## Testing (`zsh/test/`)
+
+Tests are written in [zunit](https://zunit.xyz/) and live in `zsh/test/`.
+Run all tests from the `zsh/` directory:
+
+```zsh
+zsh test.sh
+```
+
+**Rules when modifying `zsh/lib/`:**
+
+1. After any change to a lib file, run `zsh test.sh` to verify nothing is broken.
+2. Every new function or behaviour added to a lib file must have a corresponding
+   test in `zsh/test/<name>.zunit`. If the file doesn't exist yet, create it.

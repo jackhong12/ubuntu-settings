@@ -29,6 +29,17 @@ if [ ! -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k ]; then
     prun git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 fi
 
+# install zunit for testing
+if ! command -v zunit &>/dev/null; then
+  prun git clone --depth=1 https://github.com/molovo/revolver /tmp/revolver-install
+  prun sudo install /tmp/revolver-install/revolver /usr/local/bin/revolver
+  rm -rf /tmp/revolver-install
+  prun git clone --depth=1 https://github.com/zunit-zsh/zunit.git /tmp/zunit-install
+  (cd /tmp/zunit-install && prun zsh build.zsh)
+  prun sudo install /tmp/zunit-install/zunit /usr/local/bin/zunit
+  rm -rf /tmp/zunit-install
+fi
+
 # Generate a fresh ~/.zshrc that sources the repo's zsh/.zshrc {{{
 git_root_path=$(git rev-parse --show-toplevel)
 repo_zshrc="$git_root_path/zsh/.zshrc"

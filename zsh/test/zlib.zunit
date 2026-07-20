@@ -1,0 +1,99 @@
+#!/usr/bin/env zunit
+
+@setup {
+  ZLIB_DIR="$(git rev-parse --show-toplevel)/zsh/lib"
+  unset ZSH_LIB_PATH
+  unset __INCLUDE_ZLIB_ZSH__
+  source "$ZLIB_DIR/zlib.zsh"
+}
+
+# --- ZSH_LIB_PATH bootstrap ---
+
+@test 'sourcing zlib.zsh sets ZSH_LIB_PATH' {
+  assert "$ZSH_LIB_PATH" is_not_empty
+}
+
+@test 'ZSH_LIB_PATH contains zlib.zsh directory' {
+  assert "$ZSH_LIB_PATH" contains "$ZLIB_DIR"
+}
+
+@test 'ZSH_LIB_PATH is exported' {
+  run zsh -c 'echo $ZSH_LIB_PATH'
+  assert "$output" is_not_empty
+}
+
+# --- zlib_path / zlib_repo_path ---
+
+@test 'zlib_path returns ZSH_LIB_PATH' {
+  run zlib_path
+  assert "$output" same_as "$ZSH_LIB_PATH"
+}
+
+@test 'zlib_repo_path returns repo root' {
+  run zlib_repo_path
+  assert "$output/CLAUDE.md" is_file
+}
+
+# --- zinclude ---
+
+@test 'zinclude sources an existing file' {
+  run zinclude "prun.zsh"
+  assert $state equals 0
+}
+
+@test 'zinclude errors on missing file' {
+  run zinclude "nonexistent.zsh"
+  assert $state not_equal_to 0
+}
+
+@test 'zinclude rejects multiple arguments' {
+  run zinclude "prun.zsh" "print.zsh"
+  assert $state not_equal_to 0
+}
+
+# --- include guard ---
+
+@test 'zinclude does not source a file twice' {
+  zinclude "prun.zsh"
+  local flag=$(__zlib_flag_name "prun.zsh")
+  local first_value=${(P)flag}
+  zinclude "prun.zsh"
+  assert "${(P)flag}" same_as "$first_value"
+}
+
+@test 'include guard stores the full file path' {
+  zinclude "prun.zsh"
+  local flag=$(__zlib_flag_name "prun.zsh")
+  assert "${(P)flag}" contains "prun.zsh"
+}
+
+# --- multi-path ZSH_LIB_PATH ---
+
+@test 'zinclude searches all paths in ZSH_LIB_PATH' {
+  local extra_dir=$(mktemp -d)
+  echo "extra_func() { echo hello; }" > "$extra_dir/extra.zsh"
+  ZSH_LIB_PATH="${ZSH_LIB_PATH};${extra_dir}"
+  run zinclude "extra.zsh"
+  assert $state equals 0
+  rm -rf "$extra_dir"
+}
+
+@test 'earlier path takes precedence over later path' {
+  local dir_a=$(mktemp -d)
+  local dir_b=$(mktemp -d)
+  echo "which_dir() { echo a; }" > "$dir_a/overlap.zsh"
+  echo "which_dir() { echo b; }" > "$dir_b/overlap.zsh"
+  ZSH_LIB_PATH="${dir_a};${dir_b}"
+  zinclude "overlap.zsh"
+  run which_dir
+  assert "$output" equals "a"
+  rm -rf "$dir_a" "$dir_b"
+}
+
+# --- zlib_list ---
+
+@test 'zlib_list includes sourced file paths' {
+  zinclude "prun.zsh"
+  run zlib_list
+  assert "$output" contains "prun.zsh"
+}
