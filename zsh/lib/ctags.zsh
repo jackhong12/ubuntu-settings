@@ -1,13 +1,5 @@
 #!/bin/zsh
 
-# Only include this file once {{{
-if [[ -v __INCLUDE_CTAGS_ZSH__ ]]; then
-  return 0;
-else
-  __INCLUDE_CTAGS_ZSH__=1
-fi
-# }}}
-
 source ~/.zsh/zlib.zsh
 zinclude "prun.zsh"
 

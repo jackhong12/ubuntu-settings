@@ -1,13 +1,5 @@
 #!/bin/zsh
 
-# Only include this file once {{{
-if [[ -v __INCLUDE_CHECK_INSTALL_ZSH__ ]]; then
-  return 0;
-else
-  __INCLUDE_CHECK_INSTALL_ZSH__=1
-fi
-# }}}
-
 
 # check_install: Check whether the binary exists. If not, install it by apt-get {{{
 

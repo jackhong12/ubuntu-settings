@@ -1,13 +1,5 @@
 #!/bin/zsh
 
-# Only include this file once {{{
-if [[ -v __INCLUDE_LLVM_ZSH__ ]]; then
-  return 0;
-else
-  __INCLUDE_LLVM_ZSH__=1
-fi
-# }}}
-
 source ~/.zsh/zlib.zsh
 zinclude "arguments.zsh"
 zinclude "print.zsh"

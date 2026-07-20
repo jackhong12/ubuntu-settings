@@ -3,14 +3,6 @@
 # This file contains functions for printing colored text to the terminal. This
 # should be a dependency-free file.
 
-# Only include this file once. {{{
-if [[ -v __INCLUDE_PRINT_ZSH__ ]]; then
-  return 0;
-else
-  __INCLUDE_PRINT_ZSH__=1
-fi
-# }}}
-
 # perror: Print error {{{
 perror () {
   _red $1

@@ -6,14 +6,6 @@
 #   - Show the recorded performance data.
 #     $ perf report
 
-# Only include this file once {{{
-if [[ -v __INCLUDE_PERF_ZSH__ ]]; then
-  return 0;
-else
-  __INCLUDE_PERF_ZSH__=1
-fi
-# }}}
-
 source ~/.zsh/zlib.zsh
 
 # perf_install_in_wsl2: Install perf in WSL2 {{{

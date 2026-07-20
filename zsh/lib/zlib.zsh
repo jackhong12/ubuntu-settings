@@ -1,17 +1,46 @@
 #!/bin/zsh
 
 # Only include this file once {{{
-if [[ -v __INCLUDE_ENV_ZSH__ ]]; then
+if [[ -v __INCLUDE_ZLIB_ZSH__ ]]; then
   return 0;
 else
-  __INCLUDE_ENV_ZSH__=1
+  __INCLUDE_ZLIB_ZSH__=1
 fi
 # }}}
 
 
-__UBUNTU_SETTINGS_GIT_ROOT__="__SED_UBUNTU_SETTINGS_GIT_ROOT__"
-__USETTING_ZSH_LIB_PATH__="/home/$USER/.zsh/zlib"
+# These are normally exported by the generated ~/.zshrc before this file is
+# sourced. Only fall back to defaults when they are not already set.
+: ${__UBUNTU_SETTINGS_GIT_ROOT__:="__SED_UBUNTU_SETTINGS_GIT_ROOT__"}
+: ${ZSH_LIB_PATH:="/home/$USER/.zsh/zlib"}
 
+
+# __zlib_flag_name: Map a file to its include-guard variable name {{{
+# e.g. arguments.zsh -> __INCLUDE_ARGUMENTS_ZSH__, gcc-dev.zsh -> __INCLUDE_GCC_DEV_ZSH__
+__zlib_flag_name () {
+  local base=${1:t}     # basename
+  base=${base%.zsh}     # strip .zsh extension
+  base=${base//-/_}     # hyphens are not valid in variable names
+  echo "__INCLUDE_${(U)base}_ZSH__"
+}
+# }}} __zlib_flag_name
+
+# __zlib_source_once: Source a file at most once, guarded by its flag {{{
+# The guard is derived from the file name here, so individual library files
+# no longer need their own "only include once" block.
+__zlib_source_once () {
+  local file=$1
+  local flag=$(__zlib_flag_name $file)
+
+  # Already sourced?
+  if [[ -v $flag ]]; then
+    return 0
+  fi
+
+  typeset -g $flag=1
+  source $file
+}
+# }}} __zlib_source_once
 
 # zlib-include: Function to source zlib if available {{{
 # Usage:
@@ -24,11 +53,11 @@ zlib-include () {
     return 1
   fi
 
-  zlib_path=$__USETTING_ZSH_LIB_PATH__/$1
+  zlib_path=$ZSH_LIB_PATH/$1
 
   # Check if the file exists
   if [[ -f $zlib_path ]]; then
-    source $zlib_path
+    __zlib_source_once $zlib_path
   else
     echo "zlib-include: File '$zlib_path' not found" >&2
     return 1
@@ -48,11 +77,11 @@ zinclude () {
 # zinclude_all: Function to source all zlib files in a directory {{{
 
 zinclude_all () {
-  zlib_dir_path=$__USETTING_ZSH_LIB_PATH__
+  zlib_dir_path=$ZSH_LIB_PATH
 
   for file in $zlib_dir_path/*.zsh; do
     if [[ -f $file ]]; then
-      source $file
+      __zlib_source_once $file
     fi
   done
 }
