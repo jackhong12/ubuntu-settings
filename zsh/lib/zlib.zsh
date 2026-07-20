@@ -4,15 +4,19 @@
 if [[ -v __INCLUDE_ZLIB_ZSH__ ]]; then
   return 0;
 else
-  __INCLUDE_ZLIB_ZSH__=1
+  __INCLUDE_ZLIB_ZSH__=${0:A}
 fi
 # }}}
 
-
+# Always include the directory containing this file so zlib.zsh is
+# self-bootstrapping even when ZSH_LIB_PATH is not pre-set by ~/.zshrc.
+typeset -g _zlib_dir=${0:A:h}
 if [[ ! -v ZSH_LIB_PATH ]]; then
-  echo "zlib.zsh: ZSH_LIB_PATH is not set. Re-run zsh/install.sh." >&2
-  return 1
+  ZSH_LIB_PATH=$_zlib_dir
+elif [[ ";${ZSH_LIB_PATH};" != *";${_zlib_dir};"* ]]; then
+  ZSH_LIB_PATH="${_zlib_dir};${ZSH_LIB_PATH}"
 fi
+export ZSH_LIB_PATH
 
 
 # __zlib_flag_name: Map a file to its include-guard variable name {{{
@@ -37,7 +41,7 @@ __zlib_source_once () {
     return 0
   fi
 
-  typeset -g $flag=1
+  typeset -g $flag=$file
   source $file
 }
 # }}} __zlib_source_once
@@ -53,15 +57,17 @@ zlib-include () {
     return 1
   fi
 
-  zlib_path=$ZSH_LIB_PATH/$1
+  local -a dirs=("${(s:;:)ZSH_LIB_PATH}")
+  for dir in $dirs; do
+    local candidate=$dir/$1
+    if [[ -f $candidate ]]; then
+      __zlib_source_once $candidate
+      return 0
+    fi
+  done
 
-  # Check if the file exists
-  if [[ -f $zlib_path ]]; then
-    __zlib_source_once $zlib_path
-  else
-    echo "zlib-include: File '$zlib_path' not found" >&2
-    return 1
-  fi
+  echo "zlib-include: '$1' not found in ZSH_LIB_PATH" >&2
+  return 1
 }
 
 # }}} zlib-include
@@ -77,12 +83,13 @@ zinclude () {
 # zinclude_all: Function to source all zlib files in a directory {{{
 
 zinclude_all () {
-  zlib_dir_path=$ZSH_LIB_PATH
-
-  for file in $zlib_dir_path/*.zsh; do
-    if [[ -f $file ]]; then
-      __zlib_source_once $file
-    fi
+  local -a dirs=("${(s:;:)ZSH_LIB_PATH}")
+  for dir in $dirs; do
+    for file in $dir/*.zsh; do
+      if [[ -f $file ]]; then
+        __zlib_source_once $file
+      fi
+    done
   done
 }
 
@@ -98,6 +105,17 @@ zlib_path () {
 # zlib_repo_path: Function to get the path of a zlib file in the repo {{{
 
 zlib_repo_path () {
-  echo "${ZSH_LIB_PATH:P:h:h}"
+  echo "${_zlib_dir:h:h}"
 }
 # }}} zlib_repo_path
+
+# zlib_list: Print all sourced zlib files {{{
+
+zlib_list () {
+  local var
+  for var in ${(k)parameters[(I)__INCLUDE_*_ZSH__]}; do
+    echo "${(P)var}"
+  done
+}
+
+# }}} zlib_list
