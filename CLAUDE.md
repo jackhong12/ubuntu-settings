@@ -42,7 +42,7 @@ PowerShell (Windows, run from repo root in an elevated prompt):
 
 `zlib.zsh` is the entry point. It defines `zinclude <file>` and `zinclude_all`, which load files from `~/.zsh/zlib/` (a symlink to `zsh/lib/` created by `zsh/install.sh`).
 
-During install, `zsh/install.sh` patches `zlib.zsh` in-place to embed the absolute repo path into `__UBUNTU_SETTINGS_GIT_ROOT__`, then runs `git update-index --assume-unchanged` on it so the change is not tracked.
+During install, `zsh/install.sh` generates `~/.zshrc` which exports `ZSH_LIB_PATH` pointing to the repo's `zsh/lib/` directory.
 
 Each library file guards against double-sourcing with:
 ```zsh

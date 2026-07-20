@@ -9,10 +9,10 @@ fi
 # }}}
 
 
-# These are normally exported by the generated ~/.zshrc before this file is
-# sourced. Only fall back to defaults when they are not already set.
-: ${__UBUNTU_SETTINGS_GIT_ROOT__:="__SED_UBUNTU_SETTINGS_GIT_ROOT__"}
-: ${ZSH_LIB_PATH:="/home/$USER/.zsh/zlib"}
+if [[ ! -v ZSH_LIB_PATH ]]; then
+  echo "zlib.zsh: ZSH_LIB_PATH is not set. Re-run zsh/install.sh." >&2
+  return 1
+fi
 
 
 # __zlib_flag_name: Map a file to its include-guard variable name {{{
@@ -91,13 +91,13 @@ zinclude_all () {
 # zlib_path: Function to get the path of a zlib file {{{
 
 zlib_path () {
-  echo "$__UBUNTU_SETTINGS_GIT_ROOT__/zsh/lib"
+  echo "$ZSH_LIB_PATH"
 }
 # }}} zlib_path
 
 # zlib_repo_path: Function to get the path of a zlib file in the repo {{{
 
 zlib_repo_path () {
-  echo "$__UBUNTU_SETTINGS_GIT_ROOT__"
+  echo "${ZSH_LIB_PATH:P:h:h}"
 }
 # }}} zlib_repo_path
