@@ -40,18 +40,22 @@ PowerShell (Windows, run from repo root in an elevated prompt):
 
 ## Zsh library system (`zsh/lib/`)
 
-`zlib.zsh` is the entry point. It defines `zinclude <file>` and `zinclude_all`, which load files from `~/.zsh/zlib/` (a symlink to `zsh/lib/` created by `zsh/install.sh`).
+`zlib.zsh` is the entry point. It defines `zinclude <file>` and `zinclude_all`,
+which load files from `ZSH_LIB_PATH` (a semicolon-separated list of directories,
+similar to `PATH`).
 
-During install, `zsh/install.sh` generates `~/.zshrc` which exports `ZSH_LIB_PATH` pointing to the repo's `zsh/lib/` directory.
+`zlib.zsh` is self-bootstrapping: on load it prepends its own directory to
+`ZSH_LIB_PATH` via `$0`, so it works even if `ZSH_LIB_PATH` is not pre-set.
 
-Each library file guards against double-sourcing with:
-```zsh
-if [[ -v __INCLUDE_<NAME>_ZSH__ ]]; then
-  return 0
-else
-  __INCLUDE_<NAME>_ZSH__=1
-fi
-```
+`zsh/install.sh` generates `~/.zshrc` which:
+1. Exports `ZSH_LIB_PATH` pointing to the repo's `zsh/lib/`
+2. Sources `zlib.zsh`
+3. Calls `zinclude_all` to load all lib files
+4. Sources `zsh/.zshrc` for the rest of the shell config
+
+Include guards are stored as global variables named `__INCLUDE_<NAME>_ZSH__`,
+whose value is the full path of the sourced file (useful for debugging with
+`zlib_list`).
 
 ### Key helpers
 
@@ -60,6 +64,9 @@ fi
 - `vime` — open all modified files (`git status`) in vim; falls back to Perforce `p4 opened`
 - `vimp` — open files changed in the previous commit (`git diff-tree HEAD`)
 - `tproject` — tmux project launcher (requires `TPROJECT_ENABLE=1`)
+- `zlib_list` — print all currently sourced zlib files
+- `zlib_path` — print `ZSH_LIB_PATH`
+- `zlib_repo_path` — print the repo root (derived from `zlib.zsh`'s own location)
 
 ## PowerShell library system (`posh/lib/`)
 
