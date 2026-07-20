@@ -51,4 +51,6 @@ printf "  ZSH_LIB_PATH: $zlib_path\n"
 printf "  source:       $repo_zshrc\n"
 # }}} Generate ~/.zshrc
 
-prun sudo chsh -s $(which zsh)
+if [[ -z "$CI" ]]; then
+  prun sudo chsh -s $(which zsh)
+fi
