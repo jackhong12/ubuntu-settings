@@ -70,13 +70,10 @@ whose value is the full path of the sourced file (useful for debugging with
 
 ## PowerShell library system (`posh/lib/`)
 
-`posh/install.ps1` rewrites `$PROFILE` to set `$PoshDir` and dot-source `profile.ps1`.  
-`profile.ps1` dot-sources each file in `posh/lib/` explicitly.
-
-When adding a new `posh/lib/*.ps1`, register it in `profile.ps1` with:
-```powershell
-. "$PoshDir\lib\<name>.ps1"
-```
+`posh/install.ps1` rewrites `$PROFILE` to dot-source `profile.ps1`, which
+derives `$CurrentDir` itself via `$PSScriptRoot`.
+`profile.ps1` dot-sources every `*.ps1` file in `posh/lib/` automatically —
+no manual registration needed when adding a new lib file.
 
 Local machine overrides go in `~/local.ps1` (not tracked).
 

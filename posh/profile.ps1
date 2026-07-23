@@ -1,12 +1,13 @@
+$CurrentDir = $PSScriptRoot
+
 Invoke-Expression (&starship init powershell)
-oh-my-posh init pwsh --config "$PoshDir\myposhconfig.json" | Invoke-Expression
+oh-my-posh init pwsh --config "$CurrentDir\myposhconfig.json" | Invoke-Expression
 
 Import-Module PSReadLine # Better history & completion
 Set-PSReadLineOption -PredictionSource History
 
 # Source other settings
-. "$PoshDir\lib\path.ps1"
-. "$PoshDir\lib\vim.ps1"
+Get-ChildItem "$CurrentDir\lib\*.ps1" | ForEach-Object { . $_.FullName }
 
 # Source local settings
 $localProfile = "$HOME\local.ps1"
